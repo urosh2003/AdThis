@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ffa1b077947c0a4ecd37c3d4bc239, type: 3}
+  m_Name: TombstoneShape
+  m_EditorClassIdentifier: 
+  shapeName: 2x3 Tombstone
+  cells:
+  - {x: 1, y: 2}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  cellSprites:
+  - {fileID: -1783286100, guid: d646cd1a0a0688843a306ecd1a766b29, type: 3}
+  - {fileID: 725716709, guid: d646cd1a0a0688843a306ecd1a766b29, type: 3}
+  - {fileID: 1545014184, guid: d646cd1a0a0688843a306ecd1a766b29, type: 3}
+  - {fileID: 2019057296, guid: d646cd1a0a0688843a306ecd1a766b29, type: 3}
+  - {fileID: 2068189835, guid: d646cd1a0a0688843a306ecd1a766b29, type: 3}
+  cellSpritesSecond:
+  - {fileID: 1629603051, guid: 4dcc68c1d1f193c488793715827cb5a8, type: 3}
+  - {fileID: -931324536, guid: 4dcc68c1d1f193c488793715827cb5a8, type: 3}
+  - {fileID: 1051985426, guid: 4dcc68c1d1f193c488793715827cb5a8, type: 3}
+  - {fileID: -807206259, guid: 4dcc68c1d1f193c488793715827cb5a8, type: 3}
+  - {fileID: 1191719269, guid: 4dcc68c1d1f193c488793715827cb5a8, type: 3}
+  pointsPerCell: 1000
+  spriteSwapTime: 1
+  spawnOffset: 2

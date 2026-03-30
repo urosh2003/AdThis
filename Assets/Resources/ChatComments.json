@@ -1,0 +1,37 @@
+{
+  "positive": [
+    { "username": "dzoni2412", "message": "common W" },
+    { "username": "Echo_Baby43", "message": "67" },
+    { "username": "RNBO65", "message": "LEGENDARY" },
+    { "username": "SlippingJimmy", "message": "POGCHAMP" },
+    { "username": "Crown_of_the_World", "message": "THE GOATTT" },
+    { "username": "BlueEyegGreenDragon", "message": "OOOO" },
+    { "username": "Ready_boii_omg", "message": "WOAH" },
+    { "username": "BotOnTop", "message": "POG" },
+    { "username": "CarrotDragon", "message": "POGGERS" },
+    { "username": "acetisal", "message": "peak" },
+    { "username": "Alphabet_Mafia", "message": "rare W" },
+    { "username": "Potato.", "message": "nice" },
+    { "username": "SunOfSon", "message": "no cap" },
+    { "username": "RichardTheThird", "message": "GOAT" },
+    { "username": "KightNightKnightNight", "message": "SON" },
+    { "username": "M1L4", "message": "pog" },
+    { "username": "BookOnBook", "message": "YEAH" },
+    { "username": "BATTERY_ACID", "message": "LOL" },
+    { "username":  "TonyS", "message":  "gabagool"}
+  ],
+  "neutral": [
+    { "username": "Potato.", "message": "lmao" },
+    { "username": "urosh2003", "message": "LOL" },
+    { "username": "acetisal", "message": "tweak" },
+    { "username":  "HectorSalamanca", "message":  "DING DING DING DING"}
+  ],
+  "negative": [
+    { "username": "urosh2003", "message": "common L" },
+    { "username": "Echo_Baby43", "message": "soy boy" },
+    { "username": "RNBO65", "message": "lmao" },
+    { "username": "dzoni2412", "message": "tweaking" },
+    { "username": "Ninja34", "message": "legendary L" },
+    { "username": "BATTERY_ACID", "message": "boring incel" }
+  ]
+}

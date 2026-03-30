@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ffa1b077947c0a4ecd37c3d4bc239, type: 3}
+  m_Name: 3x3L2Shape
+  m_EditorClassIdentifier: 
+  shapeName: 3x3 L2
+  cells:
+  - {x: 2, y: 2}
+  - {x: 2, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 2, y: 0}
+  cellSprites:
+  - {fileID: 908474248, guid: 863c1f6e288377045a422fcc9ca17ba1, type: 3}
+  - {fileID: 1926492139, guid: 863c1f6e288377045a422fcc9ca17ba1, type: 3}
+  - {fileID: 12196215, guid: 863c1f6e288377045a422fcc9ca17ba1, type: 3}
+  - {fileID: 228243775, guid: 863c1f6e288377045a422fcc9ca17ba1, type: 3}
+  - {fileID: -263912023, guid: 863c1f6e288377045a422fcc9ca17ba1, type: 3}
+  cellSpritesSecond:
+  - {fileID: 545765610, guid: ebd11385c205217438bd8f43830777a5, type: 3}
+  - {fileID: -1102357859, guid: ebd11385c205217438bd8f43830777a5, type: 3}
+  - {fileID: 942572179, guid: ebd11385c205217438bd8f43830777a5, type: 3}
+  - {fileID: 1211346916, guid: ebd11385c205217438bd8f43830777a5, type: 3}
+  - {fileID: -44962278, guid: ebd11385c205217438bd8f43830777a5, type: 3}
+  pointsPerCell: 1000
+  spriteSwapTime: 0.5
+  spawnOffset: 3

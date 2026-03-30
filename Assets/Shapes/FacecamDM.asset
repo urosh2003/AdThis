@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ffa1b077947c0a4ecd37c3d4bc239, type: 3}
+  m_Name: FacecamDM
+  m_EditorClassIdentifier: 
+  shapeName: 3x3 FaceCam
+  cells:
+  - {x: 0, y: 2}
+  - {x: 1, y: 2}
+  - {x: 2, y: 2}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 2, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 2, y: 0}
+  cellSprites:
+  - {fileID: -567390973, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: 1608910437, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: -759221436, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: 401160507, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: -468977643, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: -443651597, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: -1285528422, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: -526834202, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  - {fileID: 1573274675, guid: 462705799cf148c4aa3c89ed72bee39b, type: 3}
+  cellSpritesSecond:
+  - {fileID: -767495528, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -552217884, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -1957226539, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: 1358247206, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -1053152521, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: 1121221651, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -620910930, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -816598386, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  - {fileID: -2121463951, guid: be85bb104f66c194c82b0fefae15088e, type: 3}
+  pointsPerCell: 0
+  spriteSwapTime: 0.3
+  spawnOffset: 0
+  previewSprite: {fileID: 21300000, guid: 8801aa9efc408b6409798be81f3a2c26, type: 3}

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ffa1b077947c0a4ecd37c3d4bc239, type: 3}
+  m_Name: ChairShape
+  m_EditorClassIdentifier: 
+  shapeName: 2x3 Chair Shape
+  cells:
+  - {x: 0, y: 2}
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  cellSprites:
+  - {fileID: 1088941502, guid: 1ece91e38fe531945b699898de7bc680, type: 3}
+  - {fileID: -1102806272, guid: 1ece91e38fe531945b699898de7bc680, type: 3}
+  - {fileID: -1978360586, guid: 1ece91e38fe531945b699898de7bc680, type: 3}
+  - {fileID: -1460371393, guid: 1ece91e38fe531945b699898de7bc680, type: 3}
+  - {fileID: 30961543, guid: 1ece91e38fe531945b699898de7bc680, type: 3}
+  cellSpritesSecond:
+  - {fileID: 1628801287, guid: 33b955ca0ea346d43a125c64cb0af1a4, type: 3}
+  - {fileID: -249952790, guid: 33b955ca0ea346d43a125c64cb0af1a4, type: 3}
+  - {fileID: 269494801, guid: 33b955ca0ea346d43a125c64cb0af1a4, type: 3}
+  - {fileID: 149998905, guid: 33b955ca0ea346d43a125c64cb0af1a4, type: 3}
+  - {fileID: -1385005888, guid: 33b955ca0ea346d43a125c64cb0af1a4, type: 3}
+  pointsPerCell: 1000
+  spriteSwapTime: 0.5
+  spawnOffset: 2

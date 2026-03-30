@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 348ffa1b077947c0a4ecd37c3d4bc239, type: 3}
+  m_Name: 3x2RectangleShape
+  m_EditorClassIdentifier: 
+  shapeName: 3x2 Rectangle Shape
+  cells:
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 2, y: 1}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 2, y: 0}
+  cellSprites:
+  - {fileID: -697365603, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  - {fileID: -2026898671, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  - {fileID: -273921364, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  - {fileID: -600577688, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  - {fileID: 557583839, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  - {fileID: -1861404639, guid: aa018233f985d7440ac6ce36d165f3df, type: 3}
+  cellSpritesSecond:
+  - {fileID: -1563428555, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  - {fileID: -678840742, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  - {fileID: 1113198935, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  - {fileID: -1874833140, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  - {fileID: -97551647, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  - {fileID: 1228975668, guid: 4c96d2c7e814d9244b0ae17c0ba071aa, type: 3}
+  pointsPerCell: 1000
+  spriteSwapTime: 0.8
+  spawnOffset: 3
+  previewSprite: {fileID: 0}
