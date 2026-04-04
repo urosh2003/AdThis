@@ -100,7 +100,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         CurrentViewers = startingViewers;
-        CurrentMoney = 0;
+        CurrentMoney = 10000000;
 
         Grid = new GridCell[width, height];
 
