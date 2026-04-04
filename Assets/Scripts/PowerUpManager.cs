@@ -16,6 +16,8 @@ public class PowerUpManager : MonoBehaviour
         this.currentPowerUps.Add(new BottomGreenRowPowerUp(0.2f));
         this.currentPowerUps.Add(new FixedMoneyPerAdCellPowerUp(0.2f, 1000));
         this.currentPowerUps.Add(new BetterGreenMultiplierPowerUp(0.2f));
+        this.currentPowerUps.Add(new ForbiddenToNormalPowerUp(0.15f));
+        this.currentPowerUps.Add(new NormalToBonusPowerUp(0.15f));
 
     }
 
