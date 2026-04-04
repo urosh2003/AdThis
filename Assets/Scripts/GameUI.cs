@@ -12,6 +12,11 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Button doneButton;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text gameOverScoreText;
+    
+    [Header("Timer Display")]
+    [SerializeField] private Color timerFullColor = Color.green;
+    [SerializeField] private Color timerMidColor = Color.yellow;
+    [SerializeField] private Color timerEmptyColor = Color.red;
 
     [Header("Score Punch Effect")]
     [SerializeField] private float punchScale = 1.05f;
@@ -68,12 +73,21 @@ public class GameUI : MonoBehaviour
 
     private void UpdateTimer(float time)
     {
-        timerImage.fillAmount = time / RoundManager.Instance.roundTime;
+        float ratio = time / RoundManager.Instance.roundTime;
+        timerImage.fillAmount = ratio;
 
-        float timeRemainingRatio = time / RoundManager.Instance.roundTime;
-        float currentInterval = Mathf.Lerp(0.06f, 1.75f, timeRemainingRatio);
+        if (ratio < 0.5f)
+        {
+            timerImage.color = Color.Lerp(timerEmptyColor, timerMidColor, ratio * 2f);
+        }
+        else
+        {
+            timerImage.color = Color.Lerp(timerMidColor, timerFullColor, (ratio - 0.5f) * 2f);
+        }
 
-        if (_lastBeepTime - time >= currentInterval)
+        float currentInterval = Mathf.Lerp(0.06f, 1.75f, ratio);
+
+        if (!RoundManager.Instance.isDraining && _lastBeepTime - time >= currentInterval)
         {
             timerImage.GetComponent<AudioSource>().Play();
             _lastBeepTime = time;

@@ -121,6 +121,8 @@ public class RoundManager : MonoBehaviour
     // [SerializeField] private AudioSource drainAudioSource;
     // [SerializeField] private AudioClip drainClip;
 
+    public bool isDraining { get; private set; } = false;
+
     private Coroutine _drainCoroutine;
 
     /// <summary>
@@ -136,6 +138,7 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator DrainTimerCoroutine(Action onComplete)
     {
+        isDraining = true;
         float startTime = timeRemaining;
         float elapsed = 0f;
 
@@ -153,6 +156,7 @@ public class RoundManager : MonoBehaviour
         }
 
         timeRemaining = 0f;
+        isDraining = false;
         _drainCoroutine = null;
         onComplete?.Invoke();
     }
