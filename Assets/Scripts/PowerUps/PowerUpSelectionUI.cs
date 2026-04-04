@@ -26,12 +26,38 @@ public class PowerUpSelectionUI : MonoBehaviour
     [Header("Skip")]
     [SerializeField] private Button skipButton;
 
+    [Header("Jimmy World Timer")]
+    [SerializeField] private float jimmyWorldDuration = 15f;
+    [SerializeField] private Image timerImage;
+
     private Action<PowerUp> _onSelected;
     private List<PowerUp> _currentChoices;
+    private float _selectionTimeRemaining;
+    private bool _timerActive;
 
     void Awake()
     {
         panel.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (!_timerActive) return;
+
+        _selectionTimeRemaining -= Time.deltaTime;
+
+        if (timerImage != null)
+            timerImage.fillAmount = _selectionTimeRemaining / jimmyWorldDuration;
+
+        RoundManager.Instance.timeRemaining = _selectionTimeRemaining;
+
+        if (_selectionTimeRemaining <= 0f)
+        {
+            _selectionTimeRemaining = 0f;
+            _timerActive = false;
+            Hide();
+            _onSelected?.Invoke(null);
+        }
     }
 
     public void Show(List<PowerUp> choices, Action<PowerUp> onSelected)
@@ -45,7 +71,9 @@ public class PowerUpSelectionUI : MonoBehaviour
             option1Root.SetActive(true);
             option1Name.text = choices[0].displayName;
             option1Description.text = choices[0].description;
-            option1Cost.text = $"Jimmy's Cut: {choices[0].jimmysCut * 100:0}%";
+            option1Cost.text = choices[0].paymentMode == PaymentMode.JimmysCut
+                ? $"Jimmy's Cut: {choices[0].jimmysCut * 100:0}%"
+                : $"Cost: ${choices[0].moneyCost:N0}";
         }
         else
         {
@@ -57,7 +85,9 @@ public class PowerUpSelectionUI : MonoBehaviour
             option2Root.SetActive(true);
             option2Name.text = choices[1].displayName;
             option2Description.text = choices[1].description;
-            option2Cost.text = $"Jimmy's Cut: {choices[1].jimmysCut * 100:0}%";
+            option2Cost.text = choices[1].paymentMode == PaymentMode.JimmysCut
+                ? $"Jimmy's Cut: {choices[1].jimmysCut * 100:0}%"
+                : $"Cost: ${choices[1].moneyCost:N0}";
         }
         else
         {
@@ -72,25 +102,38 @@ public class PowerUpSelectionUI : MonoBehaviour
         //skipButton.onClick.AddListener(OnSkip);
 
         panel.SetActive(true);
-        Time.timeScale = 0f;
+
+        _selectionTimeRemaining = jimmyWorldDuration;
+        _timerActive = true;
+        RoundManager.Instance.timeRemaining = jimmyWorldDuration;
     }
 
     private void OnChoose(int index)
     {
+        if (!_timerActive) return;
+        _timerActive = false;
         var selected = _currentChoices[index];
-        Hide();
-        _onSelected?.Invoke(selected);
+        RoundManager.Instance.DrainTimerThen(() =>
+        {
+            Hide();
+            _onSelected?.Invoke(selected);
+        });
     }
 
     private void OnSkip()
     {
-        Hide();
-        _onSelected?.Invoke(null);
+        if (!_timerActive) return;
+        _timerActive = false;
+        RoundManager.Instance.DrainTimerThen(() =>
+        {
+            Hide();
+            _onSelected?.Invoke(null);
+        });
     }
 
     private void Hide()
     {
+        _timerActive = false;
         panel.SetActive(false);
-        Time.timeScale = 1f;
     }
 }

@@ -19,7 +19,7 @@ public class RoundManager : MonoBehaviour
     public float timeRemaining
     {
         get => _timeRemaining;
-        private set { _timeRemaining = value; OnTimerChanged?.Invoke(value); }
+        set { _timeRemaining = value; OnTimerChanged?.Invoke(value); }
     }
 
     private bool _shapePlacedThisRound;
@@ -31,6 +31,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private float betweenRoundDuration = 1f;
     [SerializeField] private int viewerPenaltyForNotPlacing = 10;
+
+    [HideInInspector] public float secondsSavedThisRound;
 
     void Awake()
     {
@@ -66,6 +68,7 @@ public class RoundManager : MonoBehaviour
         OnStateChanged?.Invoke(state);
 
         bool playerPlacedBeforeTimerExpired = shapePlacedThisRound;
+        secondsSavedThisRound = playerPlacedBeforeTimerExpired ? timeRemaining : 0f;
 
         // Force drop if player is mid-drag, then auto-place if still not on board
         var allShapes = FindObjectsOfType<ShapeInstance>();
@@ -110,6 +113,50 @@ public class RoundManager : MonoBehaviour
         EndRound();
     }
 
+    [Header("Timer Drain")]
+    [SerializeField] private float drainDuration = 0.4f;
+    [SerializeField] private AnimationCurve drainCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    // Serialized so you can wire up a sound later:
+    // [SerializeField] private AudioSource drainAudioSource;
+    // [SerializeField] private AudioClip drainClip;
+
+    private Coroutine _drainCoroutine;
+
+    /// <summary>
+    /// Smoothly drains the timer to 0, then calls onComplete.
+    /// To add sound later: play drainAudioSource.PlayOneShot(drainClip) at the start of the coroutine.
+    /// </summary>
+    public void DrainTimerThen(Action onComplete)
+    {
+        if (_drainCoroutine != null)
+            StopCoroutine(_drainCoroutine);
+        _drainCoroutine = StartCoroutine(DrainTimerCoroutine(onComplete));
+    }
+
+    private IEnumerator DrainTimerCoroutine(Action onComplete)
+    {
+        float startTime = timeRemaining;
+        float elapsed = 0f;
+
+        // --- Add sound here later ---
+        // if (drainAudioSource != null && drainClip != null)
+        //     drainAudioSource.PlayOneShot(drainClip);
+
+        while (elapsed < drainDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / drainDuration);
+            float curved = drainCurve.Evaluate(t);
+            timeRemaining = Mathf.Lerp(startTime, 0f, curved);
+            yield return null;
+        }
+
+        timeRemaining = 0f;
+        _drainCoroutine = null;
+        onComplete?.Invoke();
+    }
+
     private IEnumerator BetweenRoundsDelay()
     {
         yield return new WaitForSeconds(betweenRoundDuration);
@@ -123,7 +170,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartNewRound()
     {
-        ViewerDealManager.Instance.TurnBackgroundLight();
+        ViewerDealManager.Instance?.TurnBackgroundLight();
         roundNumber += 1;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;
