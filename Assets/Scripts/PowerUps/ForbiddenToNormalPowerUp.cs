@@ -4,7 +4,7 @@ public class ForbiddenToNormalPowerUp : IPowerUp
 {
     private float chance;
 
-    public ForbiddenToNormalPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut)
+    public ForbiddenToNormalPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut, "Zone Cleaner", "10% chance to clear each forbidden tile.")
     {
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
