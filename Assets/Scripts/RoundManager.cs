@@ -113,6 +113,50 @@ public class RoundManager : MonoBehaviour
         EndRound();
     }
 
+    [Header("Timer Drain")]
+    [SerializeField] private float drainDuration = 0.4f;
+    [SerializeField] private AnimationCurve drainCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    // Serialized so you can wire up a sound later:
+    // [SerializeField] private AudioSource drainAudioSource;
+    // [SerializeField] private AudioClip drainClip;
+
+    private Coroutine _drainCoroutine;
+
+    /// <summary>
+    /// Smoothly drains the timer to 0, then calls onComplete.
+    /// To add sound later: play drainAudioSource.PlayOneShot(drainClip) at the start of the coroutine.
+    /// </summary>
+    public void DrainTimerThen(Action onComplete)
+    {
+        if (_drainCoroutine != null)
+            StopCoroutine(_drainCoroutine);
+        _drainCoroutine = StartCoroutine(DrainTimerCoroutine(onComplete));
+    }
+
+    private IEnumerator DrainTimerCoroutine(Action onComplete)
+    {
+        float startTime = timeRemaining;
+        float elapsed = 0f;
+
+        // --- Add sound here later ---
+        // if (drainAudioSource != null && drainClip != null)
+        //     drainAudioSource.PlayOneShot(drainClip);
+
+        while (elapsed < drainDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / drainDuration);
+            float curved = drainCurve.Evaluate(t);
+            timeRemaining = Mathf.Lerp(startTime, 0f, curved);
+            yield return null;
+        }
+
+        timeRemaining = 0f;
+        _drainCoroutine = null;
+        onComplete?.Invoke();
+    }
+
     private IEnumerator BetweenRoundsDelay()
     {
         yield return new WaitForSeconds(betweenRoundDuration);

@@ -55,7 +55,8 @@ public class PowerUpSelectionUI : MonoBehaviour
         {
             _selectionTimeRemaining = 0f;
             _timerActive = false;
-            OnSkip();
+            Hide();
+            _onSelected?.Invoke(null);
         }
     }
 
@@ -109,15 +110,25 @@ public class PowerUpSelectionUI : MonoBehaviour
 
     private void OnChoose(int index)
     {
+        if (!_timerActive) return;
+        _timerActive = false;
         var selected = _currentChoices[index];
-        Hide();
-        _onSelected?.Invoke(selected);
+        RoundManager.Instance.DrainTimerThen(() =>
+        {
+            Hide();
+            _onSelected?.Invoke(selected);
+        });
     }
 
     private void OnSkip()
     {
-        Hide();
-        _onSelected?.Invoke(null);
+        if (!_timerActive) return;
+        _timerActive = false;
+        RoundManager.Instance.DrainTimerThen(() =>
+        {
+            Hide();
+            _onSelected?.Invoke(null);
+        });
     }
 
     private void Hide()

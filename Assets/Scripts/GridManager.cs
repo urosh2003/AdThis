@@ -722,6 +722,15 @@ public class GridManager : MonoBehaviour
                 RoundManager.Instance.TriggerGameOver();
             yield break;
         }
+
+        // Drain remaining timer after scoring, then continue
+        if (RoundManager.Instance.timeRemaining > 0)
+        {
+            bool drained = false;
+            RoundManager.Instance.DrainTimerThen(() => drained = true);
+            yield return new WaitUntil(() => drained);
+        }
+
         PowerUpManager.instance.TryOfferPowerUpSelection(() =>
         {
             RoundManager.Instance.StartNewRound();
