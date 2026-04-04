@@ -19,7 +19,7 @@ public class RoundManager : MonoBehaviour
     public float timeRemaining
     {
         get => _timeRemaining;
-        private set { _timeRemaining = value; OnTimerChanged?.Invoke(value); }
+        set { _timeRemaining = value; OnTimerChanged?.Invoke(value); }
     }
 
     private bool _shapePlacedThisRound;
@@ -31,6 +31,8 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private float betweenRoundDuration = 1f;
     [SerializeField] private int viewerPenaltyForNotPlacing = 10;
+
+    [HideInInspector] public float secondsSavedThisRound;
 
     void Awake()
     {
@@ -66,6 +68,7 @@ public class RoundManager : MonoBehaviour
         OnStateChanged?.Invoke(state);
 
         bool playerPlacedBeforeTimerExpired = shapePlacedThisRound;
+        secondsSavedThisRound = playerPlacedBeforeTimerExpired ? timeRemaining : 0f;
 
         // Force drop if player is mid-drag, then auto-place if still not on board
         var allShapes = FindObjectsOfType<ShapeInstance>();
@@ -123,7 +126,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartNewRound()
     {
-        ViewerDealManager.Instance.TurnBackgroundLight();
+        ViewerDealManager.Instance?.TurnBackgroundLight();
         roundNumber += 1;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;

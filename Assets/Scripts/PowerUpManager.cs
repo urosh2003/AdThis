@@ -21,7 +21,17 @@ public class PowerUpManager : MonoBehaviour
             new FixedMoneyPerAdCellPowerUp(0.2f, 1000),
             new BetterGreenMultiplierPowerUp(0.2f),
             new ForbiddenToNormalPowerUp(0.10f),
-            new NormalToBonusPowerUp(0.10f)
+            new NormalToBonusPowerUp(0.10f),
+            new AdBreakPowerUp(),
+            new AntiAdBlockerPowerUp(),
+            new ApologyVideoPowerUp(),
+            new CancelablePowerUp(),
+            new ColabPowerUp(),
+            new MultiLevelMarketingPowerUp(),
+            new PrettyPrivilegePowerUp(),
+            new PrimetimeSlotPowerUp(),
+            new ThumbnailTailorPowerUp(),
+            new UncancelablePowerUp()
         };
     }
 
@@ -57,6 +67,12 @@ public class PowerUpManager : MonoBehaviour
         List<PowerUp> choices = GetRandomChoices(2);
 
         if (choices.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        if (selectionUI == null)
         {
             onComplete?.Invoke();
             return;

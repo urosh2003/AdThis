@@ -58,6 +58,8 @@ public class GridManager : MonoBehaviour
     public float moneyMultiplier = 1f;
     public float viewerMultiplier = 1f;
 
+    [HideInInspector] public int lastTotalRoundMoney;
+
 
     public int CurrentMoney
     {
@@ -696,6 +698,18 @@ public class GridManager : MonoBehaviour
             timeOffset += 0.5f;
         }
         StartCoroutine(updateCurrentMoney(-(int)(totalJimmysCut*totalRoundMoney), timeOffset));
+
+        // Early finish bonus: 2% per second saved
+        float secondsSaved = RoundManager.Instance.secondsSavedThisRound;
+        if (secondsSaved > 0 && totalRoundMoney > 0)
+        {
+            int earlyBonus = (int)(0.02f * secondsSaved * totalRoundMoney);
+            if (earlyBonus > 0)
+                StartCoroutine(updateCurrentMoney(earlyBonus, timeOffset + 0.3f));
+            timeOffset += 0.3f;
+        }
+
+        lastTotalRoundMoney = totalRoundMoney;
         StartCoroutine(WaitForParticles(timeOffset+0.5f));
     }
     
