@@ -26,6 +26,7 @@ public class ShapeInstance : MonoBehaviour
     private Vector2Int? currentGridPos = null; // Track where it's currently placed
     private Camera mainCamera;
     private Vector2Int lastLegalGridCoord;
+    private Vector2Int _grabbedCellOffset;
 
     // Input actions
     private InputAction leftClickAction;
@@ -44,13 +45,19 @@ public class ShapeInstance : MonoBehaviour
 
     private void Start()
     {
+        // Reset ScriptableObject cells to original state every spawn
+        if (shapeData.originalCells == null || shapeData.originalCells.Length == 0)
+            shapeData.originalCells = (Vector2Int[])shapeData.cells.Clone();
+        else
+            shapeData.cells = (Vector2Int[])shapeData.originalCells.Clone();
+
+        shapeData.rotationStep = 0;
         spriteSwapTime = shapeData.spriteSwapTime;
         mainCamera = Camera.main;
         originalPosition = transform.position;
         InitializeVisuals();
         timeElapsed = 0;
         currentSprite = 1;
-        shapeData.rotationStep = 0;
     }
 
     private void OnEnable()
@@ -134,10 +141,9 @@ public class ShapeInstance : MonoBehaviour
     private void OnLeftClickStarted(InputAction.CallbackContext ctx)
     {
         if (!IsInteractionAllowed()) return;
-        if (!IsPointerOverThisObject())    return;
+        if (!IsPointerOverThisObject()) return;
 
         isDragging = true;
-        dragOffset = transform.position - GetPointerWorldPos();
         SetVisualsSortingOrder(10);
         PlayPickupSound();
 
@@ -151,6 +157,12 @@ public class ShapeInstance : MonoBehaviour
         {
             lastLegalGridCoord = new Vector2Int(-1, -1);
         }
+
+        float avgX = 0f, avgY = 0f;
+        foreach (var c in shapeData.cells) { avgX += c.x; avgY += c.y; }
+        avgX /= shapeData.cells.Length;
+        avgY /= shapeData.cells.Length;
+        dragOffset = new Vector3(-avgX, -avgY, 0f);
     }
 
     private void OnLeftClickCanceled(InputAction.CallbackContext ctx)
@@ -161,25 +173,28 @@ public class ShapeInstance : MonoBehaviour
 
         if (SettingsManager.Instance.IsSettingsOpen()) return;
 
+        // Re-derive grid coord from current world position
         Vector2Int gridCoord = GridManager.Instance.WorldToGrid(transform.position);
 
-        if (GridManager.Instance.IsPositionLegal(gridCoord, shapeData))
+        // Always re-check legality with current cells (accounts for rotation)
+        if (GridManager.Instance.IsInBounds(gridCoord) &&
+            GridManager.Instance.IsPositionLegal(gridCoord, shapeData))
         {
             PlaceAt(gridCoord);
         }
         else
         {
-            transform.position = originalPosition;
-            gridCoord = GridManager.Instance.WorldToGrid(originalPosition);
-
-            if (GridManager.Instance.IsInBounds(gridCoord) &&
-                GridManager.Instance.IsPositionLegal(gridCoord, shapeData))
+            // Find closest legal position instead of snapping back
+            Vector2Int? bestPos = FindClosestLegalPosition(gridCoord);
+            if (bestPos.HasValue)
             {
-                GridManager.Instance.PlaceShape(shapeData, gridCoord);
-                currentGridPos = gridCoord;
+                PlaceAt(bestPos.Value);
             }
-
-            SetVisualsColor(defaultColor);
+            else
+            {
+                transform.position = originalPosition;
+                SetVisualsColor(defaultColor);
+            }
         }
 
         PlayPlaceSound();
@@ -189,8 +204,8 @@ public class ShapeInstance : MonoBehaviour
     {
         if (!IsInteractionAllowed()) return;
 
-        // Only rotate when hovering over or actively dragging this shape
-        if (!isDragging && !IsPointerOverThisObject()) return;
+        // Only rotate the piece currently being held (dragged)
+        if (!isDragging) return;
 
         RotateShape();
     }
@@ -223,7 +238,6 @@ public class ShapeInstance : MonoBehaviour
     /// </summary>
     public void RotateShape()
     {
-        Vector2Int? previousGridPos = currentGridPos;
         if (currentGridPos.HasValue)
         {
             GridManager.Instance.RemoveShape(shapeData, currentGridPos.Value);
@@ -231,90 +245,33 @@ public class ShapeInstance : MonoBehaviour
             isPlaced = false;
         }
 
-        // Capture bounding box BEFORE rotation
-        Vector2Int preMin = GetCellsBoundsMin(shapeData.cells);
+        // Express cursor as a grid coord, and shape origin as a grid coord
+        Vector2Int cursorGrid  = GridManager.Instance.WorldToGrid(GetPointerWorldPos());
+        Vector2Int originGrid  = GridManager.Instance.WorldToGrid(transform.position);
+
+        // Pivot = cursor position relative to shape origin, in grid space
+        Vector2Int pivot = cursorGrid - originGrid;
+
+        for (int i = 0; i < shapeData.cells.Length; i++)
+        {
+            Vector2Int c = shapeData.cells[i] - pivot;
+            shapeData.cells[i] = new Vector2Int(c.y, -c.x) + pivot;
+        }
 
         shapeData.rotationStep = (shapeData.rotationStep + 1) % 4;
-        ApplyRotationToShapeData();
+
+        for (int i = 0; i < tileVisuals.Count; i++)
+        {
+            tileVisuals[i].transform.localPosition = new Vector3(shapeData.cells[i].x, shapeData.cells[i].y, 0f);
+            tileVisuals[i].transform.localRotation = Quaternion.Euler(0f, 0f, -shapeData.rotationStep * 90f);
+        }
+
         RebuildColliders();
 
         if (rotateSound != null)
             _audioSource.PlayOneShot(rotateSound);
 
-        if (previousGridPos.HasValue)
-        {
-            // Align post-rotation bounding box top-left to pre-rotation top-left
-            Vector2Int postMin = GetCellsBoundsMin(shapeData.cells);
-            Vector2Int alignedOrigin = previousGridPos.Value + (preMin - postMin);
-
-            Vector2Int? bestPos = FindClosestLegalPosition(alignedOrigin);
-            if (bestPos.HasValue)
-                PlaceAt(bestPos.Value, playSound: false);
-            else
-                UpdateGhostVisuals();
-        }
-        else
-        {
-            UpdateGhostVisuals();
-        }
-    }
-
-    /// <summary>
-    /// Returns the minimum (top-left) corner of the bounding box of the given cells.
-    /// </summary>
-    private Vector2Int GetCellsBoundsMin(Vector2Int[] cells)
-    {
-        int minX = int.MaxValue, minY = int.MaxValue;
-        foreach (var c in cells)
-        {
-            if (c.x < minX) minX = c.x;
-            if (c.y < minY) minY = c.y;
-        }
-        return new Vector2Int(minX, minY);
-    }
-
-    /// <summary>
-    /// Searches in expanding rings around <paramref name="origin"/> for the nearest
-    /// legal grid position, up to <paramref name="maxRadius"/> cells away.
-    /// </summary>
-    private Vector2Int? FindClosestLegalPosition(Vector2Int origin, int maxRadius = 5)
-    {
-        // Check origin first
-        if (GridManager.Instance.IsPositionLegal(origin, shapeData))
-            return origin;
-
-        // Expand outward ring by ring
-        for (int radius = 1; radius <= maxRadius; radius++)
-        {
-            Vector2Int? best = null;
-            float bestDist = float.MaxValue;
-
-            for (int dx = -radius; dx <= radius; dx++)
-            {
-                for (int dy = -radius; dy <= radius; dy++)
-                {
-                    // Only check the cells on the edge of this ring
-                    if (Mathf.Abs(dx) != radius && Mathf.Abs(dy) != radius)
-                        continue;
-
-                    Vector2Int candidate = new Vector2Int(origin.x + dx, origin.y + dy);
-                    if (!GridManager.Instance.IsInBounds(candidate)) continue;
-                    if (!GridManager.Instance.IsPositionLegal(candidate, shapeData)) continue;
-
-                    float dist = ((Vector2)(candidate - origin)).sqrMagnitude;
-                    if (dist < bestDist)
-                    {
-                        bestDist = dist;
-                        best = candidate;
-                    }
-                }
-            }
-
-            if (best.HasValue)
-                return best;
-        }
-
-        return null;
+        UpdateGhostVisuals();
     }
 
     /// <summary>
@@ -336,6 +293,52 @@ public class ShapeInstance : MonoBehaviour
             tileVisuals[i].transform.localPosition = new Vector3(offset.x, offset.y, 0f);
             tileVisuals[i].transform.localRotation = Quaternion.Euler(0f, 0f, -shapeData.rotationStep * 90f);
         }
+    }
+
+    private Vector2Int GetCenterCell(Vector2Int[] cells)
+    {
+        float avgX = 0f, avgY = 0f;
+        foreach (var c in cells)
+        {
+            avgX += c.x;
+            avgY += c.y;
+        }
+        avgX /= cells.Length;
+        avgY /= cells.Length;
+        Debug.Log($"Center cell: ({avgX}, {avgY})");
+        return new Vector2Int(Mathf.RoundToInt(avgX), Mathf.RoundToInt(avgY));
+    }
+
+    private Vector2Int? FindClosestLegalPosition(Vector2Int origin, int maxRadius = 5)
+    {
+        if (GridManager.Instance.IsPositionLegal(origin, shapeData))
+            return origin;
+
+        for (int radius = 1; radius <= maxRadius; radius++)
+        {
+            Vector2Int? best = null;
+            float bestDist = float.MaxValue;
+
+            for (int dx = -radius; dx <= radius; dx++)
+            {
+                for (int dy = -radius; dy <= radius; dy++)
+                {
+                    if (Mathf.Abs(dx) != radius && Mathf.Abs(dy) != radius)
+                        continue;
+
+                    Vector2Int candidate = new Vector2Int(origin.x + dx, origin.y + dy);
+                    if (!GridManager.Instance.IsInBounds(candidate)) continue;
+                    if (!GridManager.Instance.IsPositionLegal(candidate, shapeData)) continue;
+
+                    float dist = ((Vector2)(candidate - origin)).sqrMagnitude;
+                    if (dist < bestDist) { bestDist = dist; best = candidate; }
+                }
+            }
+
+            if (best.HasValue) return best;
+        }
+
+        return null;
     }
 
     private void RebuildColliders()
