@@ -225,6 +225,11 @@ public class GameUI : MonoBehaviour
         label.color = isNegative
             ? new Color(0xe9 / 255f, 0x38 / 255f, 0x41 / 255f)
             : floatingLabelPrefab.color;
+        if (isNegative)
+        {
+            label.fontSize = floatingLabelPrefab.fontSize * 3.0f;
+        }
+
         StartCoroutine(FloatLabel(label));
     }
 
