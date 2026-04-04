@@ -692,7 +692,10 @@ public class GridManager : MonoBehaviour
                 RoundManager.Instance.TriggerGameOver();
             yield break;
         }
-        RoundManager.Instance.StartNewRound();
+        PowerUpManager.instance.TryOfferPowerUpSelection(() =>
+        {
+            RoundManager.Instance.StartNewRound();
+        });
     }
 
     private IEnumerator particleSystemPlayback(ParticleSystem ps, float delay, float pitch)

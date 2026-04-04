@@ -35,7 +35,7 @@ public class RoundManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        roundNumber = 1;
+        roundNumber = 0;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;
     }

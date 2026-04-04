@@ -4,7 +4,7 @@ public class NormalToBonusPowerUp : IPowerUp
 {
     private float chance;
 
-    public NormalToBonusPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut)
+    public NormalToBonusPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut, "Lucky Tiles", "10% chance to upgrade each normal tile to bonus.")
     {
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
