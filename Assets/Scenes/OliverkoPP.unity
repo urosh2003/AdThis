@@ -18438,7 +18438,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 2766d6d49c27ca146b5a4ff154d0486c, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 5f20688dc6153e24f9de656faaadaaea, type: 2}
 --- !u!4 &1401305916
 Transform:
   m_ObjectHideFlags: 0
@@ -18466,9 +18466,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b9ce5acb04177940b35fe8e21c83917, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultVolume: {fileID: 0}
+  volume: {fileID: 1401305915}
+  defaultVolume: {fileID: 11400000, guid: 2766d6d49c27ca146b5a4ff154d0486c, type: 2}
   jimmyVolume: {fileID: 0}
-  currentVolume: {fileID: 0}
 --- !u!1 &1408412582
 GameObject:
   m_ObjectHideFlags: 0
