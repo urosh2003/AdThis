@@ -602,6 +602,22 @@ public class GridManager : MonoBehaviour
                     ParticleSystem psPrefab = normalParticleSystem;
                     int moneyChange = 0;
                     int viewerChange = 0;
+                    double rotationMultiplier = 1;
+                    switch (cell.OccupiedBy.rotationStep % 4)
+                    {
+                        case 1: // 90 degrees
+                            rotationMultiplier = 0.75;
+                            break;
+                        case 2: // 180 degrees
+                            rotationMultiplier = 0.5;
+                            break;
+                        case 3: // 270 degrees
+                            rotationMultiplier = 0.75;
+                            break;
+                        default: // 0 degrees
+                            rotationMultiplier = 1;
+                            break;
+                    }
                     // Facecam logic: pointsPerCell == 0 means it gives viewers, not money
                     if (iter == 1)
                         if(cell.OccupiedBy.pointsPerCell == 0)
@@ -639,6 +655,7 @@ public class GridManager : MonoBehaviour
                     var psInstance = Instantiate(psPrefab, spawnPos, Quaternion.identity);
                     activeParticleSystems.Add(psInstance);
                     StartCoroutine(particleSystemPlayback(psInstance, timeOffset, pitch));
+                    moneyChange = (int)(moneyChange * rotationMultiplier);
                     if (moneyChange != 0)
                         StartCoroutine(updateCurrentMoney(moneyChange, timeOffset));
                     if (viewerChange != 0)
