@@ -35,7 +35,7 @@ public class RoundManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        roundNumber = 1;
+        roundNumber = 0;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;
     }
@@ -123,6 +123,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartNewRound()
     {
+        ViewerDealManager.Instance.TurnBackgroundLight();
         roundNumber += 1;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;

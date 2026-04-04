@@ -1,13 +1,15 @@
-public class FixedMoneyPerAdCellPowerUp : IPowerUp
+public class FixedMoneyPerAdCellPowerUp : PowerUp
 {
     public int moneyPerAdPerCell;
-    
-    public FixedMoneyPerAdCellPowerUp(float jimmysCut, int moneyPerAd) : base(jimmysCut)
+
+    public FixedMoneyPerAdCellPowerUp(float jimmysCut, int moneyPerAd)
+        : base(PaymentMode.JimmysCut, jimmysCut, 0, -1)
     {
         this.powerUpType = PowerUpType.DuringScoring;
         this.moneyPerAdPerCell = moneyPerAd;
+        this.displayName = "Fixed Ad Revenue";
+        this.description = "Adds a flat money bonus per ad cell.";
     }
-
 
     public override void ApplyPowerUp()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ViewerDealManager : MonoBehaviour
 {
@@ -16,6 +17,13 @@ public class ViewerDealManager : MonoBehaviour
 
     [Header("UI References")]
     [SerializeField] private Transform dealCardContainer;
+
+    [SerializeField] private Sprite activeButtonSprite;
+    [SerializeField] private Sprite inactiveButtonSprite;
+    [SerializeField] private Image streamButtonImage;
+    [SerializeField] private Image shopButtonImage;
+    
+    [SerializeField] private GameObject dealCardPanel;
     [SerializeField] private GameObject dealCardPrefab;
 
     [Header("Debug")]
@@ -25,18 +33,57 @@ public class ViewerDealManager : MonoBehaviour
 
     private List<DealCardUI> _cards = new List<DealCardUI>();
 
+    
+    [SerializeField] private Image background;
+    [SerializeField] private Sprite lightBackground;
+    [SerializeField] private Sprite darkBackground;
+
     public static event Action<ViewerDeal> OnDealPurchased;
 
     private void Awake()
     {
         Instance = this;
+        RoundManager.OnStateChanged += CheckForClose;
+    }
+    public void CheckForClose(RoundState roundState)
+    {
+        if(roundState!=RoundState.Playing)
+        {
+            TurnOffDeals();
+        }
+    }
+
+    public void TurnBackgroundDark()
+    {
+        background.sprite = darkBackground;
+    }
+
+    public void TurnBackgroundLight()
+    {
+        background.sprite = lightBackground;
+    }
+
+    public void TurnOnDeals()
+    {
+        if (RoundManager.Instance.state == RoundState.Playing)
+        {
+            dealCardPanel.SetActive(true);
+            background.sprite = darkBackground;
+        }
+        
+    }
+
+    public void TurnOffDeals()
+    {
+        dealCardPanel.SetActive(false);
+        background.sprite = lightBackground;
     }
 
     private void Start()
     {
         if (debugStartingMoney > 0)
             GridManager.Instance.CurrentMoney = debugStartingMoney;
-
+        TurnOffDeals();
         GenerateDeals();
         PopulateUI();
     }
