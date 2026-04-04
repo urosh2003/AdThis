@@ -2278,6 +2278,7 @@ MonoBehaviour:
   preventViewerLoss: 0
   moneyMultiplier: 1
   viewerMultiplier: 1
+  lastTotalRoundMoney: 0
   startingViewers: 10000
   passiveViewersPerRound: 5
   viewerLossPerForbiddenCell: 500
@@ -16333,6 +16334,134 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1274798050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1274798052}
+  - component: {fileID: 1274798051}
+  m_Layer: 0
+  m_Name: Jimmy music
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1274798051
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274798050}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 8467924703654654749, guid: 725525e9f831fb7429567552da09aae0, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 0eaf1be4c9e9df144ba09f83e15555ed, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1274798052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274798050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1087.6819, y: 574.12134, z: -5.890387}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1285728704
 GameObject:
   m_ObjectHideFlags: 0
@@ -20782,6 +20911,32 @@ MonoBehaviour:
   state: 1
   betweenRoundDuration: 5
   viewerPenaltyForNotPlacing: 1000
+  secondsSavedThisRound: 0
+  drainDuration: 0.4
+  drainCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1623437870
 Transform:
   m_ObjectHideFlags: 0
@@ -21018,7 +21173,7 @@ GameObject:
   - component: {fileID: 1636443518}
   - component: {fileID: 1636443517}
   m_Layer: 0
-  m_Name: Audio Source
+  m_Name: Theme Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21034,7 +21189,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8467924703654654749, guid: 725525e9f831fb7429567552da09aae0, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 1160ed6a369016c46b3583b4899eeb0a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b2574c979cb45b6439f86a71548cb05d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -23613,6 +23768,8 @@ MonoBehaviour:
   option2Cost: {fileID: 2003875408}
   option2Button: {fileID: 48164958}
   skipButton: {fileID: 0}
+  jimmyWorldDuration: 15
+  timerImage: {fileID: 0}
 --- !u!224 &1897735661
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24553,15 +24710,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.078431375, g: 0.078431375, b: 0.11764706, a: 0.78431374}
+  m_Color: {r: 0.078431375, g: 0.078431375, b: 0.11764706, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 41837da81ce115843a5130b9f6809a8e, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -27507,6 +27664,9 @@ MonoBehaviour:
   doneButton: {fileID: 1626246941}
   gameOverPanel: {fileID: 613439689}
   gameOverScoreText: {fileID: 426005154}
+  timerFullColor: {r: 0, g: 1, b: 0, a: 1}
+  timerMidColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  timerEmptyColor: {r: 1, g: 0, b: 0, a: 1}
   punchScale: 1.05
   punchDuration: 0.5
   dissipateSpeed: 5
@@ -28076,10 +28236,17 @@ MonoBehaviour:
   shopButtonImage: {fileID: 1285728707}
   dealCardPanel: {fileID: 323243487}
   dealCardPrefab: {fileID: 2144877003531316637, guid: 855293eef332b25449dfc7b01f50148f, type: 3}
-  debugStartingMoney: 1000000
   background: {fileID: 1029191602}
   lightBackground: {fileID: 21300000, guid: 795396fbc43cf8443949cb3ee86cc35b, type: 3}
   darkBackground: {fileID: 21300000, guid: d5b1232d0497fe14c8635e624738b0a7, type: 3}
+  bar: {fileID: 1818065511}
+  lightBar: {fileID: 21300000, guid: 64565c1fa0e4bf24ca3b044a154a5004, type: 3}
+  darkBar: {fileID: 21300000, guid: 5bc7f6248a8c7b844aeacca9a7a530f3, type: 3}
+  chatPanel: {fileID: 1986510263}
+  lightPanelColor: {r: 0.015686275, g: 0.24705884, b: 0.5529412, a: 1}
+  darkPanelColor: {r: 0.227451, g: 0.07450981, b: 0.18431373, a: 1}
+  mainTheme: {fileID: 1636443517}
+  jimmysTheme: {fileID: 1274798051}
 --- !u!4 &2130363280
 Transform:
   m_ObjectHideFlags: 0
@@ -28256,6 +28423,7 @@ SceneRoots:
   - {fileID: 1623437870}
   - {fileID: 27213658}
   - {fileID: 1636443518}
+  - {fileID: 1274798052}
   - {fileID: 1074763212}
   - {fileID: 73780452}
   - {fileID: 1995001043}
