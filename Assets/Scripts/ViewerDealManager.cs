@@ -39,6 +39,7 @@ public class ViewerDealManager : MonoBehaviour
     [SerializeField] private Sprite darkBackground;
 
     public static event Action<ViewerDeal> OnDealPurchased;
+    public static event Action<bool> OnBackgroundChanged;
 
     private void Awake()
     {
@@ -56,11 +57,13 @@ public class ViewerDealManager : MonoBehaviour
     public void TurnBackgroundDark()
     {
         background.sprite = darkBackground;
+        OnBackgroundChanged?.Invoke(true);
     }
 
     public void TurnBackgroundLight()
     {
         background.sprite = lightBackground;
+        OnBackgroundChanged?.Invoke(false);
     }
 
     public void TurnOnDeals()
