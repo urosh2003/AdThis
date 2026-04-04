@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public enum PowerUpType { AfterZoneSetup, DuringScoring, AfterScoring, OnRoundStart }
 public enum PaymentMode { JimmysCut, MoneyCost }
 
@@ -25,7 +27,9 @@ public abstract class PowerUp
     public PowerUp(PaymentMode paymentMode, float jimmysCut, int moneyCost, int duration)
     {
         this.paymentMode = paymentMode;
-        this.jimmysCut = paymentMode == PaymentMode.JimmysCut ? jimmysCut : 0f;
+        this.jimmysCut = paymentMode == PaymentMode.JimmysCut
+            ? jimmysCut * Random.Range(0.75f, 1.25f)
+            : 0f;
         this.moneyCost = paymentMode == PaymentMode.MoneyCost ? moneyCost : 0;
         this.totalDuration = duration;
         this.remainingRounds = duration;

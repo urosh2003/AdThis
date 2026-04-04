@@ -8,7 +8,7 @@ public class FixedMoneyPerAdCellPowerUp : PowerUp
         this.powerUpType = PowerUpType.DuringScoring;
         this.moneyPerAdPerCell = moneyPerAd;
         this.displayName = "Fixed Ad Revenue";
-        this.description = "Adds a flat money bonus per ad cell.";
+        this.description = $"+${moneyPerAd} per ad cell permanently.";
     }
 
     public override void ApplyPowerUp()

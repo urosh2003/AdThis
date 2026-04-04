@@ -1,15 +1,25 @@
 public class PrimetimeSlotPowerUp : PowerUp
 {
-    public PrimetimeSlotPowerUp(int moneyCost = 80000)
+    public PrimetimeSlotPowerUp(int moneyCost = 125000)
         : base(PaymentMode.MoneyCost, 0f, moneyCost, 1)
     {
-        this.powerUpType = PowerUpType.OnRoundStart;
+        this.powerUpType = PowerUpType.DuringScoring;
         this.displayName = "Primetime Slot";
-        this.description = "Double your viewers for 1 round.";
+        this.description = "Double the viewers gained this round.";
+    }
+
+    public override void OnAcquired()
+    {
+        GridManager.Instance.viewerMultiplier *= 2f;
     }
 
     public override void ApplyPowerUp()
     {
-        GridManager.Instance.CurrentViewers *= 2;
+        // Modifier is set on acquire and persists until expiry
+    }
+
+    public override void OnExpired()
+    {
+        GridManager.Instance.viewerMultiplier /= 2f;
     }
 }
