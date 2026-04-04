@@ -68,8 +68,8 @@ public class PowerUpSelectionUI : MonoBehaviour
         option1Button.onClick.AddListener(() => OnChoose(0));
         option2Button.onClick.RemoveAllListeners();
         option2Button.onClick.AddListener(() => OnChoose(1));
-        skipButton.onClick.RemoveAllListeners();
-        skipButton.onClick.AddListener(OnSkip);
+        //skipButton.onClick.RemoveAllListeners();
+        //skipButton.onClick.AddListener(OnSkip);
 
         panel.SetActive(true);
         Time.timeScale = 0f;
