@@ -224,13 +224,15 @@ public class ShapeInstance : MonoBehaviour
     public void RotateShape()
     {
         Vector2Int? previousGridPos = currentGridPos;
-
         if (currentGridPos.HasValue)
         {
             GridManager.Instance.RemoveShape(shapeData, currentGridPos.Value);
             currentGridPos = null;
             isPlaced = false;
         }
+
+        // Capture bounding box BEFORE rotation
+        Vector2Int preMin = GetCellsBoundsMin(shapeData.cells);
 
         shapeData.rotationStep = (shapeData.rotationStep + 1) % 4;
         ApplyRotationToShapeData();
@@ -241,7 +243,11 @@ public class ShapeInstance : MonoBehaviour
 
         if (previousGridPos.HasValue)
         {
-            Vector2Int? bestPos = FindClosestLegalPosition(previousGridPos.Value);
+            // Align post-rotation bounding box top-left to pre-rotation top-left
+            Vector2Int postMin = GetCellsBoundsMin(shapeData.cells);
+            Vector2Int alignedOrigin = previousGridPos.Value + (preMin - postMin);
+
+            Vector2Int? bestPos = FindClosestLegalPosition(alignedOrigin);
             if (bestPos.HasValue)
                 PlaceAt(bestPos.Value, playSound: false);
             else
@@ -251,6 +257,20 @@ public class ShapeInstance : MonoBehaviour
         {
             UpdateGhostVisuals();
         }
+    }
+
+    /// <summary>
+    /// Returns the minimum (top-left) corner of the bounding box of the given cells.
+    /// </summary>
+    private Vector2Int GetCellsBoundsMin(Vector2Int[] cells)
+    {
+        int minX = int.MaxValue, minY = int.MaxValue;
+        foreach (var c in cells)
+        {
+            if (c.x < minX) minX = c.x;
+            if (c.y < minY) minY = c.y;
+        }
+        return new Vector2Int(minX, minY);
     }
 
     /// <summary>
