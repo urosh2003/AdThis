@@ -162,44 +162,46 @@ public class GameUI : MonoBehaviour
 
     private IEnumerator LossEffect(TMP_Text target, int amount, Color originalColor, Color lossColor)
     {
-        Vector3 originalPos = target.transform.localPosition;
         float scaleMult = Mathf.Clamp(1f + (amount / 100f), 1.25f, 1.5f);
         Vector3 targetScale = _normalScale * scaleMult;
 
-        try
+        // Instant flash to loss color and scale
+        target.color = new Color(lossColor.r, lossColor.g, lossColor.b, originalColor.a);
+        target.transform.localScale = targetScale;
+
+        // Rapid pulse — shrink below normal then back up, twice
+        for (int i = 0; i < 2; i++)
         {
-            target.color = new Color(lossColor.r, lossColor.g, lossColor.b, originalColor.a);
-            target.transform.localScale = targetScale;
-
-            float shakeElapsed = 0f;
-            float shakeDuration = 0.3f;
-            float shakeMagnitude = Mathf.Clamp(amount / 20f, 5f, 7.5f);
-            while (shakeElapsed < shakeDuration)
-            {
-                shakeElapsed += Time.deltaTime;
-                float x = originalPos.x + Random.Range(-shakeMagnitude, shakeMagnitude);
-                float y = originalPos.y + Random.Range(-shakeMagnitude, shakeMagnitude);
-                target.transform.localPosition = new Vector3(x, y, originalPos.z);
-                yield return null;
-            }
-
             float t = 0f;
             while (t < 1f)
             {
-                t += Time.deltaTime * dissipateSpeed;
-                target.transform.localScale = Vector3.Lerp(targetScale, _normalScale, t);
-                Color c = Color.Lerp(lossColor, originalColor, t);
-                c.a = originalColor.a;
-                target.color = c;
+                t += Time.deltaTime * (dissipateSpeed * 3f);
+                target.transform.localScale = Vector3.Lerp(targetScale, _normalScale * 0.85f, t);
+                yield return null;
+            }
+            t = 0f;
+            while (t < 1f)
+            {
+                t += Time.deltaTime * (dissipateSpeed * 3f);
+                target.transform.localScale = Vector3.Lerp(_normalScale * 0.85f, targetScale, t);
                 yield return null;
             }
         }
-        finally
+
+        // Dissipate scale and color back to normal
+        float d = 0f;
+        while (d < 1f)
         {
-            target.transform.localScale = _normalScale;
-            target.transform.localPosition = originalPos;
-            target.color = originalColor;
+            d += Time.deltaTime * dissipateSpeed;
+            target.transform.localScale = Vector3.Lerp(targetScale, _normalScale, d);
+            Color c = Color.Lerp(lossColor, originalColor, d);
+            c.a = originalColor.a;
+            target.color = c;
+            yield return null;
         }
+
+        target.transform.localScale = _normalScale;
+        target.color = originalColor;
     }
 
     private IEnumerator FloatingLabelTicker()
