@@ -11,7 +11,7 @@ public class BottomGreenRowPowerUp : IPowerUp
         GridManager gridManager = GridManager.Instance;
         for(int i = 0; i < gridManager.width; i++)
         {
-            gridManager.Grid[0, i].TileType = TileType.Bonus;
+            gridManager.Grid[i, 0].TileType = TileType.Bonus;
         }
     }
 }
