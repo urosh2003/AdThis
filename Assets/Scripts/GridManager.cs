@@ -51,8 +51,14 @@ public class GridManager : MonoBehaviour
     public float moneyPerViewerPerCell = 0.1f;
     public float moneyPerAdPerCell = 0;
 
-    
-    
+    // Power-up modifier fields
+    public bool facecamGivesMoney = false;
+    public float facecamMoneyPerCell = 500f;
+    public bool preventViewerLoss = false;
+    public float moneyMultiplier = 1f;
+    public float viewerMultiplier = 1f;
+
+
     public int CurrentMoney
     {
         get => _currentMoney;
@@ -630,7 +636,11 @@ public class GridManager : MonoBehaviour
                     // Facecam logic: pointsPerCell == 0 means it gives viewers, not money
                     if (iter == 1)
                         if (cell.OccupiedBy.pointsPerCell == 0)
+                        {
                             viewerChange = viewersPerFacecamCell;
+                            if (facecamGivesMoney)
+                                moneyChange = (int)facecamMoneyPerCell;
+                        }
                         else
                             moneyChange = (int)(_currentViewers * moneyPerViewerPerCell + moneyPerAdPerCell);
 
@@ -638,10 +648,14 @@ public class GridManager : MonoBehaviour
                     {
                         psPrefab = bonusParticleSystem;
                         if(cell.OccupiedBy.pointsPerCell == 0)
+                        {
                             viewerChange = (int)(viewersPerFacecamCell * bonusMultiplier);
+                            if (facecamGivesMoney)
+                                moneyChange = (int)(facecamMoneyPerCell * bonusMultiplier);
+                        }
                         else
-                            moneyChange = (int)((_currentViewers * moneyPerViewerPerCell + moneyPerAdPerCell) * bonusMultiplier); 
-                        
+                            moneyChange = (int)((_currentViewers * moneyPerViewerPerCell + moneyPerAdPerCell) * bonusMultiplier);
+
                         if (iter != 0)
                             continue;
                         pitch += 0.1f;
@@ -650,7 +664,7 @@ public class GridManager : MonoBehaviour
                     else if (cell.IsForbidden)
                     {
                         psPrefab = forbiddenParticleSystem;
-                        viewerChange = -viewerLossPerForbiddenCell;
+                        viewerChange = preventViewerLoss ? 0 : -viewerLossPerForbiddenCell;
                         moneyChange = cell.OccupiedBy.pointsPerCell; // still give money for forbidden placements
                         if (iter != 2)
                             continue;
@@ -667,7 +681,9 @@ public class GridManager : MonoBehaviour
                     var psInstance = Instantiate(psPrefab, spawnPos, Quaternion.identity);
                     activeParticleSystems.Add(psInstance);
                     StartCoroutine(particleSystemPlayback(psInstance, timeOffset, pitch));
-                    moneyChange = (int)(moneyChange * rotationMultiplier);
+                    moneyChange = (int)(moneyChange * rotationMultiplier * moneyMultiplier);
+                    if (viewerChange > 0)
+                        viewerChange = (int)(viewerChange * viewerMultiplier);
                     totalRoundMoney += moneyChange;
                     if (moneyChange != 0)
                         StartCoroutine(updateCurrentMoney(moneyChange, timeOffset));

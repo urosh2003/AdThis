@@ -4,34 +4,71 @@ using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
 {
-    public List<IPowerUp> availablePowerUps;
-    public List<IPowerUp> currentPowerUps;
+    public List<PowerUp> availablePowerUps;
+    public List<PowerUp> currentPowerUps;
 
-    [SerializeField] private PowerUpSelectionUI selectionUI;
-
+    
     public static PowerUpManager instance;
 
     void Awake()
     {
         instance = this;
-        currentPowerUps = new List<IPowerUp>();
+        this.currentPowerUps = new List<PowerUp>();
+        this.currentPowerUps.Add(new BottomGreenRowPowerUp(0.2f));
+        this.currentPowerUps.Add(new FixedMoneyPerAdCellPowerUp(0.2f, 1000));
+        this.currentPowerUps.Add(new BetterGreenMultiplierPowerUp(0.2f));
+    }
 
-        availablePowerUps = new List<IPowerUp>
+    public bool TryPurchase(PowerUp powerUp)
+    {
+        if (powerUp.paymentMode == PaymentMode.MoneyCost)
         {
-            new BottomGreenRowPowerUp(0.2f),
-            new FixedMoneyPerAdCellPowerUp(0.2f, 1000),
-            new BetterGreenMultiplierPowerUp(0.2f),
-            new ForbiddenToNormalPowerUp(0.15f),
-            new NormalToBonusPowerUp(0.15f)
-        };
+            if (GridManager.Instance.CurrentMoney < powerUp.moneyCost)
+                return false;
+            GridManager.Instance.CurrentMoney -= powerUp.moneyCost;
+        }
 
+        currentPowerUps.Add(powerUp);
+        powerUp.OnAcquired();
+
+        if (powerUp.IsInstant)
+        {
+            powerUp.ApplyPowerUp();
+            currentPowerUps.Remove(powerUp);
+        }
+
+        return true;
+    }
+
+    public void TickRound()
+    {
+        foreach (var pu in currentPowerUps)
+            pu.OnRoundTick();
+
+        var expired = new List<PowerUp>();
+        foreach (var pu in currentPowerUps)
+        {
+            if (pu.totalDuration > 0)
+            {
+                pu.remainingRounds--;
+                if (pu.remainingRounds <= 0)
+                    expired.Add(pu);
+            }
+        }
+
+        foreach (var pu in expired)
+        {
+            pu.OnExpired();
+            currentPowerUps.Remove(pu);
+        }
     }
 
     public float GetTotalJimmysCut()
     {
         float totalJimmysCut = 0.0f;
-        foreach (IPowerUp powerUp in currentPowerUps)
-            totalJimmysCut += powerUp.jimmysCut;
+        foreach (PowerUp powerUp in currentPowerUps)
+            if (powerUp.paymentMode == PaymentMode.JimmysCut)
+                totalJimmysCut += powerUp.jimmysCut;
 
         return totalJimmysCut;
     }
@@ -40,51 +77,26 @@ public class PowerUpManager : MonoBehaviour
     {
         foreach (var powerUp in currentPowerUps)
         {
-            if (powerUp.powerUpType == powerUpType)
+            if (powerUp.powerUpType == powerUpType && !powerUp.IsExpired)
             {
                 powerUp.ApplyPowerUp();
             }
         }
     }
 
-    public void TryOfferPowerUpSelection(Action onComplete)
+    public bool HasActivePowerUp<T>() where T : PowerUp
     {
-        if (availablePowerUps.Count == 0 || RoundManager.Instance.roundNumber % 2 != 0)
-        {
-            onComplete?.Invoke();
-            return;
-        }
-
-        List<IPowerUp> choices = GetRandomChoices(2);
-
-        if (choices.Count == 0)
-        {
-            onComplete?.Invoke();
-            return;
-        }
-
-        selectionUI.Show(choices, selected =>
-        {
-            if (selected != null)
-            {
-                currentPowerUps.Add(selected);
-                availablePowerUps.Remove(selected);
-            }
-            onComplete?.Invoke();
-        });
+        foreach (var pu in currentPowerUps)
+            if (pu is T && !pu.IsExpired)
+                return true;
+        return false;
     }
 
-    private List<IPowerUp> GetRandomChoices(int count)
+    public T GetActivePowerUp<T>() where T : PowerUp
     {
-        var pool = new List<IPowerUp>(availablePowerUps);
-        var choices = new List<IPowerUp>();
-
-        for (int i = 0; i < count && pool.Count > 0; i++)
-        {
-            int idx = UnityEngine.Random.Range(0, pool.Count);
-            choices.Add(pool[idx]);
-            pool.RemoveAt(idx);
-        }
-        return choices;
+        foreach (var pu in currentPowerUps)
+            if (pu is T && !pu.IsExpired)
+                return (T)pu;
+        return null;
     }
 }
