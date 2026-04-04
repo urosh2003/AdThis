@@ -8,9 +8,6 @@ using UnityEditor;
 
 public class Jimmy : MonoBehaviour
 {
-    [Header("Sprite Settings")]
-    [SerializeField] private UnityEngine.Object spritesFolder; // Drag folder here
-    
     [Header("Fade Settings")]
     [SerializeField] private float fadeDuration = 5f;
     [SerializeField] private AnimationCurve alphaCurve;
@@ -69,60 +66,31 @@ public class Jimmy : MonoBehaviour
     
     private void LoadAllSprites()
     {
-        #if UNITY_EDITOR
-        if (spritesFolder == null)
-        {
-            Debug.LogError("Sprites folder not assigned in Inspector!");
-            return;
-        }
-        
-        string folderPath = AssetDatabase.GetAssetPath(spritesFolder);
-        
-        if (string.IsNullOrEmpty(folderPath))
-        {
-            Debug.LogError("Invalid folder path!");
-            return;
-        }
-        
+        const string folderPath = "Assets/Jimmies";
+
         availableSprites.Clear();
         usedSprites.Clear();
-        
-        // Get all files in the folder
+
         string[] files = System.IO.Directory.GetFiles(folderPath, "*.png");
-        
+
         foreach (string file in files)
         {
-            // Convert Windows path to Unity path
             string unityPath = file.Replace("\\", "/");
-            
-            // Load the texture
             Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(unityPath);
-            
+
             if (texture != null)
             {
-                // Create sprite from texture
                 Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 availableSprites.Add(sprite);
-                Debug.Log($"Loaded: {unityPath}");
             }
             else
             {
                 Debug.LogWarning($"Failed to load: {unityPath}");
             }
         }
-        
-        // Shuffle
-        for (int i = 0; i < availableSprites.Count; i++)
-        {
-            Sprite temp = availableSprites[i];
-            int randomIndex = Random.Range(i, availableSprites.Count);
-            availableSprites[i] = availableSprites[randomIndex];
-            availableSprites[randomIndex] = temp;
-        }
-        
-        Debug.Log($"Loaded {availableSprites.Count} sprites");
-        
-        #endif
+
+        ShuffleList(availableSprites);
+        Debug.Log($"Loaded {availableSprites.Count} sprites from {folderPath}");
     }
     
     private void SetRandomSprite()
