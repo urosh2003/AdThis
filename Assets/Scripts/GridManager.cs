@@ -32,8 +32,8 @@ public enum TileType
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int width;
-    [SerializeField] private int height;
+    [SerializeField] public int width;
+    [SerializeField] public int height;
     [SerializeField] private Sprite greenSprite;
     [SerializeField] private Sprite redSprite;
     public GridCell[,] Grid;
@@ -46,6 +46,8 @@ public class GridManager : MonoBehaviour
 
     private int _currentMoney;
     private int _currentViewers;
+
+    public int moneyPerAd = 0;
 
     public int CurrentMoney
     {
