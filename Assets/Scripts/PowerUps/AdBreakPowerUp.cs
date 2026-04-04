@@ -1,6 +1,6 @@
 public class AdBreakPowerUp : PowerUp
 {
-    public AdBreakPowerUp(int moneyCost = 50000)
+    public AdBreakPowerUp(int moneyCost = 200000)
         : base(PaymentMode.MoneyCost, 0f, moneyCost, 1)
     {
         this.powerUpType = PowerUpType.AfterZoneSetup;

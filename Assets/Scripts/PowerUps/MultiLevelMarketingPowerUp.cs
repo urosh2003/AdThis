@@ -6,7 +6,7 @@ public class MultiLevelMarketingPowerUp : PowerUp
     private int multiplier;
     private int currentInternalRound;
 
-    public MultiLevelMarketingPowerUp(float jimmysCut = 0.2f, int baseViewers = 100, int multiplier = 3, int duration = 5)
+    public MultiLevelMarketingPowerUp(float jimmysCut = 0.12f, int baseViewers = 1000, int multiplier = 2, int duration = 4)
         : base(PaymentMode.JimmysCut, jimmysCut, 0, duration)
     {
         this.powerUpType = PowerUpType.OnRoundStart;
@@ -14,7 +14,10 @@ public class MultiLevelMarketingPowerUp : PowerUp
         this.multiplier = multiplier;
         this.currentInternalRound = -1;
         this.displayName = "Multi-Level Marketing";
-        this.description = "Gain escalating viewers each round (x" + multiplier + ") for " + duration + " rounds.";
+        var rounds = new string[duration];
+        for (int i = 0; i < duration; i++)
+            rounds[i] = (baseViewers * (int)Mathf.Pow(multiplier, i)).ToString();
+        this.description = "Gain " + string.Join(", ", rounds) + " viewers over " + duration + " rounds.";
     }
 
     public override void ApplyPowerUp()

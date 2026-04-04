@@ -25,10 +25,7 @@ public class ViewerDealManager : MonoBehaviour
     
     [SerializeField] private GameObject dealCardPanel;
     [SerializeField] private GameObject dealCardPrefab;
-
-    [Header("Debug")]
-    [SerializeField] private int debugStartingMoney = 1000000;
-
+    
     public List<ViewerDeal> Deals { get; private set; } = new List<ViewerDeal>();
 
     private List<DealCardUI> _cards = new List<DealCardUI>();
@@ -81,8 +78,6 @@ public class ViewerDealManager : MonoBehaviour
 
     private void Start()
     {
-        if (debugStartingMoney > 0)
-            GridManager.Instance.CurrentMoney = debugStartingMoney;
         TurnOffDeals();
         GenerateDeals();
         PopulateUI();

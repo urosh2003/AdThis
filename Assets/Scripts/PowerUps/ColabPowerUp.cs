@@ -2,7 +2,7 @@ public class ColabPowerUp : PowerUp
 {
     private int viewersPerRound;
 
-    public ColabPowerUp(float jimmysCut = 0.1f, int viewersPerRound = 30, int duration = 4)
+    public ColabPowerUp(float jimmysCut = 0.12f, int viewersPerRound = 1500, int duration = 4)
         : base(PaymentMode.JimmysCut, jimmysCut, 0, duration)
     {
         this.powerUpType = PowerUpType.OnRoundStart;

@@ -108,7 +108,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         CurrentViewers = startingViewers;
-        CurrentMoney = 1000000;
+        CurrentMoney = 0;
 
         Grid = new GridCell[width, height];
 
@@ -731,6 +731,7 @@ public class GridManager : MonoBehaviour
             yield return new WaitUntil(() => drained);
         }
 
+        PowerUpManager.instance.TickRound();
         PowerUpManager.instance.TryOfferPowerUpSelection(() =>
         {
             RoundManager.Instance.StartNewRound();

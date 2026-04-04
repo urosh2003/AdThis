@@ -2,7 +2,7 @@ public class ThumbnailTailorPowerUp : PowerUp
 {
     private int viewerBonus;
 
-    public ThumbnailTailorPowerUp(int moneyCost = 30000, int viewerBonus = 50)
+    public ThumbnailTailorPowerUp(int moneyCost = 75000, int viewerBonus = 8000)
         : base(PaymentMode.MoneyCost, 0f, moneyCost, 0)
     {
         this.powerUpType = PowerUpType.OnRoundStart;

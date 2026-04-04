@@ -1,6 +1,6 @@
 public class UncancelablePowerUp : PowerUp
 {
-    public UncancelablePowerUp(float jimmysCut = 0.15f, int duration = 2)
+    public UncancelablePowerUp(float jimmysCut = 0.12f, int duration = 2)
         : base(PaymentMode.JimmysCut, jimmysCut, 0, duration)
     {
         this.powerUpType = PowerUpType.DuringScoring;

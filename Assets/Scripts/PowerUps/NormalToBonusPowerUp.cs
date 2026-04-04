@@ -9,7 +9,7 @@ public class NormalToBonusPowerUp : PowerUp
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
         this.displayName = "Lucky Tiles";
-        this.description = "10% chance to upgrade each normal tile to bonus.";
+        this.description = $"{chance * 100:0}% chance to upgrade each normal tile to bonus every round.";
     }
 
     public override void ApplyPowerUp()

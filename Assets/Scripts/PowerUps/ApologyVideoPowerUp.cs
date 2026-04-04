@@ -3,7 +3,7 @@ public class ApologyVideoPowerUp : PowerUp
     private int viewerBonus;
     private int moneyBonus;
 
-    public ApologyVideoPowerUp(int moneyCost = 40000, int viewerBonus = 80, int moneyBonus = 100000)
+    public ApologyVideoPowerUp(int moneyCost = 150000, int viewerBonus = 4000, int moneyBonus = 30000)
         : base(PaymentMode.MoneyCost, 0f, moneyCost, 0)
     {
         this.powerUpType = PowerUpType.OnRoundStart;

@@ -1,6 +1,6 @@
 public class PrettyPrivilegePowerUp : PowerUp
 {
-    public PrettyPrivilegePowerUp(float jimmysCut = 0.1f, int duration = 5)
+    public PrettyPrivilegePowerUp(float jimmysCut = 0.12f, int duration = 5)
         : base(PaymentMode.JimmysCut, jimmysCut, 0, duration)
     {
         this.powerUpType = PowerUpType.DuringScoring;

@@ -9,7 +9,7 @@ public class ForbiddenToNormalPowerUp : PowerUp
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
         this.displayName = "Zone Cleaner";
-        this.description = "10% chance to clear each forbidden tile.";
+        this.description = $"{chance * 100:0}% chance to clear each forbidden tile every round.";
     }
 
     public override void ApplyPowerUp()

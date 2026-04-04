@@ -17,11 +17,11 @@ public class PowerUpManager : MonoBehaviour
         this.currentPowerUps = new List<PowerUp>();
         availablePowerUps = new List<PowerUp>
         {
-            new BottomGreenRowPowerUp(0.2f),
-            new FixedMoneyPerAdCellPowerUp(0.2f, 1000),
-            new BetterGreenMultiplierPowerUp(0.2f),
-            new ForbiddenToNormalPowerUp(0.10f),
-            new NormalToBonusPowerUp(0.10f),
+            new BottomGreenRowPowerUp(0.12f),
+            new FixedMoneyPerAdCellPowerUp(0.12f, 1000),
+            new BetterGreenMultiplierPowerUp(0.12f),
+            new ForbiddenToNormalPowerUp(0.12f),
+            new NormalToBonusPowerUp(0.12f),
             new AdBreakPowerUp(),
             new AntiAdBlockerPowerUp(),
             new ApologyVideoPowerUp(),
