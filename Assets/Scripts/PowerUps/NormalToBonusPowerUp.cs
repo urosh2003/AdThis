@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class NormalToBonusPowerUp : IPowerUp
+public class NormalToBonusPowerUp : PowerUp
 {
     private float chance;
 
-    public NormalToBonusPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut, "Lucky Tiles", "10% chance to upgrade each normal tile to bonus.")
+    public NormalToBonusPowerUp(float jimmysCut, float chance = 0.1f) : base(PaymentMode.JimmysCut, jimmysCut, 0,  1000)
     {
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
+        this.displayName = "Lucky Tiles";
+        this.description = "10% chance to upgrade each normal tile to bonus.";
     }
 
     public override void ApplyPowerUp()

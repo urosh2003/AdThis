@@ -123,6 +123,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartNewRound()
     {
+        ViewerDealManager.Instance.TurnBackgroundLight();
         roundNumber += 1;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;

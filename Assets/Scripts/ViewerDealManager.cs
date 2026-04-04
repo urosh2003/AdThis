@@ -33,6 +33,11 @@ public class ViewerDealManager : MonoBehaviour
 
     private List<DealCardUI> _cards = new List<DealCardUI>();
 
+    
+    [SerializeField] private Image background;
+    [SerializeField] private Sprite lightBackground;
+    [SerializeField] private Sprite darkBackground;
+
     public static event Action<ViewerDeal> OnDealPurchased;
 
     private void Awake()
@@ -48,13 +53,22 @@ public class ViewerDealManager : MonoBehaviour
         }
     }
 
+    public void TurnBackgroundDark()
+    {
+        background.sprite = darkBackground;
+    }
+
+    public void TurnBackgroundLight()
+    {
+        background.sprite = lightBackground;
+    }
+
     public void TurnOnDeals()
     {
         if (RoundManager.Instance.state == RoundState.Playing)
         {
             dealCardPanel.SetActive(true);
-            streamButtonImage.sprite = inactiveButtonSprite;
-            shopButtonImage.sprite = activeButtonSprite;
+            background.sprite = darkBackground;
         }
         
     }
@@ -62,8 +76,7 @@ public class ViewerDealManager : MonoBehaviour
     public void TurnOffDeals()
     {
         dealCardPanel.SetActive(false);
-        shopButtonImage.sprite = inactiveButtonSprite;
-        streamButtonImage.sprite = activeButtonSprite;
+        background.sprite = lightBackground;
     }
 
     private void Start()

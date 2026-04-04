@@ -7,16 +7,22 @@ public class PowerUpManager : MonoBehaviour
     public List<PowerUp> availablePowerUps;
     public List<PowerUp> currentPowerUps;
 
-    
+    [SerializeField] private PowerUpSelectionUI selectionUI;
+
     public static PowerUpManager instance;
 
     void Awake()
     {
         instance = this;
         this.currentPowerUps = new List<PowerUp>();
-        this.currentPowerUps.Add(new BottomGreenRowPowerUp(0.2f));
-        this.currentPowerUps.Add(new FixedMoneyPerAdCellPowerUp(0.2f, 1000));
-        this.currentPowerUps.Add(new BetterGreenMultiplierPowerUp(0.2f));
+        availablePowerUps = new List<PowerUp>
+        {
+            new BottomGreenRowPowerUp(0.2f),
+            new FixedMoneyPerAdCellPowerUp(0.2f, 1000),
+            new BetterGreenMultiplierPowerUp(0.2f),
+            new ForbiddenToNormalPowerUp(0.10f),
+            new NormalToBonusPowerUp(0.10f)
+        };
     }
 
     public bool TryPurchase(PowerUp powerUp)
@@ -40,6 +46,47 @@ public class PowerUpManager : MonoBehaviour
         return true;
     }
 
+    public void TryOfferPowerUpSelection(Action onComplete)
+    {
+        if (availablePowerUps.Count == 0 || RoundManager.Instance.roundNumber % 2 != 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        List<PowerUp> choices = GetRandomChoices(2);
+
+        if (choices.Count == 0)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        selectionUI.Show(choices, selected =>
+        {
+            if (selected != null)
+            {
+                currentPowerUps.Add(selected);
+                availablePowerUps.Remove(selected);
+            }
+            onComplete?.Invoke();
+        });
+    }
+    
+    private List<PowerUp> GetRandomChoices(int count)
+    {
+        var pool = new List<PowerUp>(availablePowerUps);
+        var choices = new List<PowerUp>();
+
+        for (int i = 0; i < count && pool.Count > 0; i++)
+        {
+            int idx = UnityEngine.Random.Range(0, pool.Count);
+            choices.Add(pool[idx]);
+            pool.RemoveAt(idx);
+        }
+        return choices;
+    }
+    
     public void TickRound()
     {
         foreach (var pu in currentPowerUps)

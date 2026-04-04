@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class ForbiddenToNormalPowerUp : IPowerUp
+public class ForbiddenToNormalPowerUp : PowerUp
 {
     private float chance;
 
-    public ForbiddenToNormalPowerUp(float jimmysCut, float chance = 0.1f) : base(jimmysCut, "Zone Cleaner", "10% chance to clear each forbidden tile.")
+    public ForbiddenToNormalPowerUp(float jimmysCut, float chance = 0.1f) :base(PaymentMode.JimmysCut, jimmysCut, 0,  10000)
     {
         this.powerUpType = PowerUpType.AfterZoneSetup;
         this.chance = chance;
+        this.displayName = "Zone Cleaner";
+        this.description = "10% chance to clear each forbidden tile.";
     }
 
     public override void ApplyPowerUp()

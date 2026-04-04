@@ -26,16 +26,17 @@ public class PowerUpSelectionUI : MonoBehaviour
     [Header("Skip")]
     [SerializeField] private Button skipButton;
 
-    private Action<IPowerUp> _onSelected;
-    private List<IPowerUp> _currentChoices;
+    private Action<PowerUp> _onSelected;
+    private List<PowerUp> _currentChoices;
 
     void Awake()
     {
         panel.SetActive(false);
     }
 
-    public void Show(List<IPowerUp> choices, Action<IPowerUp> onSelected)
+    public void Show(List<PowerUp> choices, Action<PowerUp> onSelected)
     {
+        ViewerDealManager.Instance.TurnBackgroundDark();
         _currentChoices = choices;
         _onSelected = onSelected;
 
