@@ -10,6 +10,7 @@ public class TileShape : ScriptableObject {
     public Sprite[] cellSprites; 
     public Sprite[] cellSpritesSecond; 
     public int pointsPerCell = 10;
+    public int rotationStep = 0; // 0 means no rotation, 1 means 90 degrees clockwise, etc.
     public float spriteSwapTime = 0.5f;
     [FormerlySerializedAs("width")] public int spawnOffset = 1;
     public Sprite previewSprite;

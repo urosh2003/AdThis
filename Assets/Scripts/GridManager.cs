@@ -32,8 +32,8 @@ public enum TileType
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int width;
-    [SerializeField] private int height;
+    [SerializeField] public int width;
+    [SerializeField] public int height;
     [SerializeField] private Sprite greenSprite;
     [SerializeField] private Sprite redSprite;
     public GridCell[,] Grid;
@@ -47,6 +47,12 @@ public class GridManager : MonoBehaviour
     private int _currentMoney;
     private int _currentViewers;
 
+    public int moneyPerAd = 0;
+    public float moneyPerViewerPerCell = 0.1f;
+    public float moneyPerAdPerCell = 0;
+
+    
+    
     public int CurrentMoney
     {
         get => _currentMoney;
@@ -62,9 +68,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int startingViewers = 100;
     public int StartingViewers => startingViewers;
     [SerializeField] private int passiveViewersPerRound = 5;
-    [SerializeField] private int viewerLossPerForbiddenCell = 5;
-    [SerializeField] private int viewersPerFacecamCell = 3;
-    [SerializeField] private int bonusMultiplier = 2;
+    [SerializeField] public int viewerLossPerForbiddenCell = 5;
+    [SerializeField] public int viewersPerFacecamCell = 3;
+    [SerializeField] public float bonusMultiplier = 2;
 
     [Header("Zone Visuals")]
     [SerializeField] private float zonesOppacity = 1f;
@@ -94,7 +100,7 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         CurrentViewers = startingViewers;
-        CurrentMoney = 0;
+        CurrentMoney = 10000000;
 
         Grid = new GridCell[width, height];
 
@@ -409,6 +415,7 @@ public class GridManager : MonoBehaviour
                 break;
         }
         lastZone = nextZone;
+        PowerUpManager.instance.ApplyPowerUps(PowerUpType.AfterZoneSetup);
         UpdateZoneVisuals();
     }
 
@@ -527,7 +534,7 @@ public class GridManager : MonoBehaviour
                     // Normal ad: gives money
                     int cellMoney = cell.OccupiedBy.pointsPerCell;
                     if (cell.IsBonus)
-                        cellMoney *= bonusMultiplier;
+                        cellMoney *= (int) bonusMultiplier;
                     totalMoney += cellMoney;
                 }
 
@@ -556,6 +563,7 @@ public class GridManager : MonoBehaviour
 
     public void resolveScoring()
     {
+        PowerUpManager.instance.ApplyPowerUps(PowerUpType.DuringScoring);
         outlineGrid.enabled = false;
         foreach (var overlay in zoneOverlays)
         {
@@ -585,6 +593,8 @@ public class GridManager : MonoBehaviour
             }
 
         var sentiments = new[] { ChatSentiment.Positive, ChatSentiment.Neutral, ChatSentiment.Negative };
+        var totalRoundMoney = 0;
+        var totalJimmysCut = PowerUpManager.instance.GetTotalJimmysCut();
         for (int iter = 0; iter < 3; iter++)
         {
             for (int i = 0; i < shapesPerType[iter].Count; i++)
@@ -600,18 +610,38 @@ public class GridManager : MonoBehaviour
                     ParticleSystem psPrefab = normalParticleSystem;
                     int moneyChange = 0;
                     int viewerChange = 0;
+                    double rotationMultiplier = 1;
+                    switch (cell.OccupiedBy.rotationStep % 4)
+                    {
+                        case 1: // 90 degrees
+                            rotationMultiplier = 0.75;
+                            break;
+                        case 2: // 180 degrees
+                            rotationMultiplier = 0.5;
+                            break;
+                        case 3: // 270 degrees
+                            rotationMultiplier = 0.75;
+                            break;
+                        default: // 0 degrees
+                            rotationMultiplier = 1;
+                            break;
+                    }
+
                     // Facecam logic: pointsPerCell == 0 means it gives viewers, not money
                     if (iter == 1)
-                        if(cell.OccupiedBy.pointsPerCell == 0)
+                        if (cell.OccupiedBy.pointsPerCell == 0)
                             viewerChange = viewersPerFacecamCell;
                         else
-                            moneyChange = cell.OccupiedBy.pointsPerCell;
-                    if (cell.IsBonus)
+                            moneyChange = (int)(_currentViewers * moneyPerViewerPerCell + moneyPerAdPerCell);
+
+                if (cell.IsBonus)
                     {
                         psPrefab = bonusParticleSystem;
-                        moneyChange = cell.OccupiedBy.pointsPerCell * bonusMultiplier;
                         if(cell.OccupiedBy.pointsPerCell == 0)
-                            viewerChange = viewersPerFacecamCell * bonusMultiplier;
+                            viewerChange = (int)(viewersPerFacecamCell * bonusMultiplier);
+                        else
+                            moneyChange = (int)((_currentViewers * moneyPerViewerPerCell + moneyPerAdPerCell) * bonusMultiplier); 
+                        
                         if (iter != 0)
                             continue;
                         pitch += 0.1f;
@@ -637,6 +667,8 @@ public class GridManager : MonoBehaviour
                     var psInstance = Instantiate(psPrefab, spawnPos, Quaternion.identity);
                     activeParticleSystems.Add(psInstance);
                     StartCoroutine(particleSystemPlayback(psInstance, timeOffset, pitch));
+                    moneyChange = (int)(moneyChange * rotationMultiplier);
+                    totalRoundMoney += moneyChange;
                     if (moneyChange != 0)
                         StartCoroutine(updateCurrentMoney(moneyChange, timeOffset));
                     if (viewerChange != 0)
@@ -647,8 +679,8 @@ public class GridManager : MonoBehaviour
 
             timeOffset += 0.5f;
         }
-
-        StartCoroutine(WaitForParticles(timeOffset));
+        StartCoroutine(updateCurrentMoney(-(int)(totalJimmysCut*totalRoundMoney), timeOffset));
+        StartCoroutine(WaitForParticles(timeOffset+0.5f));
     }
     
     private IEnumerator WaitForParticles(float timeOffset)
