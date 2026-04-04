@@ -75,7 +75,11 @@ public class ViewerDealManager : MonoBehaviour
             Deals.Add(deal);
         }
 
-        Deals.Sort((a, b) => a.moneyCost.CompareTo(b.moneyCost));
+        for (int i = Deals.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+            (Deals[i], Deals[j]) = (Deals[j], Deals[i]);
+        }
     }
 
     private void PopulateUI()
