@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class TileShape : ScriptableObject {
     public string shapeName;
     public Vector2Int[] cells; // e.g. L-shape: {(0,0),(0,1),(0,2),(1,0)}
+    [HideInInspector] public Vector2Int[] originalCells;
     public Sprite[] cellSprites; 
     public Sprite[] cellSpritesSecond; 
     public int pointsPerCell = 10;
