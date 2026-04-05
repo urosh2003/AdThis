@@ -59,6 +59,11 @@ public class ChatCommentManager : MonoBehaviour
             chatWidgetUI.Hide();
     }
 
+    public void HideChat()
+    {
+        chatWidgetUI.Hide();
+    }
+
     public void ShowComment(ChatSentiment sentiment, float delay)
     {
         StartCoroutine(ShowCommentAfterDelay(sentiment, delay));

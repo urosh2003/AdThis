@@ -63,6 +63,7 @@ public class PowerUpSelectionUI : MonoBehaviour
 
     public void Show(List<PowerUp> choices, Action<PowerUp> onSelected)
     {
+        ChatCommentManager.Instance.HideChat();
         ViewerDealManager.Instance.TurnBackgroundDark();
         _currentChoices = choices;
         _onSelected = onSelected;
