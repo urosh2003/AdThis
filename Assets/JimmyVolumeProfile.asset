@@ -80,7 +80,7 @@ MonoBehaviour:
     m_Value: 2
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 1
   response:
     m_OverrideState: 1
     m_Value: 0.75
@@ -105,15 +105,15 @@ MonoBehaviour:
     m_Value: {r: 0.10062885, g: 0.0053795227, b: 0.08335414, a: 1}
   center:
     m_OverrideState: 1
-    m_Value: {x: 0.5213363, y: 0.47564065}
+    m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5648786
+    m_Value: 0.4
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.76
+    m_Value: 0.627
   rounded:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
 --- !u!114 &8581021218245331528
 MonoBehaviour:

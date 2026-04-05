@@ -249,14 +249,13 @@ public class GameUI : MonoBehaviour
 
     private IEnumerator FloatLabel(TMP_Text label)
     {
-        yield return null;
-
         // Random spawn offset
         Vector3 startPos = label.transform.localPosition + new Vector3(
             Random.Range(-50f, 50f),
             Random.Range(-50f, 50f),
             0f);
         label.transform.localPosition = startPos;
+        yield return null;
 
         float elapsed = 0f;
         Color startColor = label.color;

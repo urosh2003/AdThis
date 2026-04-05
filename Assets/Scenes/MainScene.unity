@@ -10312,7 +10312,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2114234987}
+  m_Father: {fileID: 1830366320}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -18284,6 +18284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1401305916}
   - component: {fileID: 1401305915}
+  - component: {fileID: 1401305917}
   m_Layer: 0
   m_Name: PostProcessing
   m_TagString: Untagged
@@ -18323,6 +18324,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1401305917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401305914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9ce5acb04177940b35fe8e21c83917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 1401305915}
+  defaultVolume: {fileID: 11400000, guid: 2766d6d49c27ca146b5a4ff154d0486c, type: 2}
+  jimmyVolume: {fileID: 11400000, guid: 5f20688dc6153e24f9de656faaadaaea, type: 2}
 --- !u!1 &1412936009
 GameObject:
   m_ObjectHideFlags: 0
@@ -23412,7 +23428,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1001
+  m_SortingOrder: 1005
   m_TargetDisplay: 0
 --- !u!224 &1830366320
 RectTransform:
@@ -23426,6 +23442,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 653250071}
   - {fileID: 613439690}
   - {fileID: 1572865736}
   m_Father: {fileID: 0}
@@ -27750,7 +27767,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 653250071}
   - {fileID: 1491622601}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
