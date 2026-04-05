@@ -41,6 +41,11 @@ public class PowerUpManager : MonoBehaviour
         {
             GridManager.Instance.CurrentMoney = Mathf.Max(1, GridManager.Instance.CurrentMoney - powerUp.moneyCost);
         }
+        else if (powerUp.paymentMode == PaymentMode.JimmysCut)
+        {
+            Contract.Instance.CreateNewCut((int)(powerUp.jimmysCut * 100));
+            Contract.Instance.CreateNewCross();
+        }
 
         currentPowerUps.Add(powerUp);
         powerUp.OnAcquired();

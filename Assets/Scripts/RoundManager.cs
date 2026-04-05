@@ -40,6 +40,10 @@ public class RoundManager : MonoBehaviour
         roundNumber = 0;
         timeRemaining = roundTime;
         shapePlacedThisRound = false;
+        
+        // Ensure cursor is visible since we removed CursorManager which was hiding it
+        Cursor.visible = true;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     void Start()
@@ -87,6 +91,7 @@ public class RoundManager : MonoBehaviour
             Debug.Log($"Ad not placed in time! Lost {viewerPenaltyForNotPlacing} viewers.");
         }
 
+        GridManager.Instance.HideZoneLabels();
         StartCoroutine(BetweenRoundsDelayThenScore());
 
         if (GridManager.Instance.CurrentViewers <= 0)

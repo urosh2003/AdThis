@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class ShapeInstance : MonoBehaviour
@@ -12,8 +13,10 @@ public class ShapeInstance : MonoBehaviour
     [SerializeField] private AudioClip pickUpSound;
     [SerializeField] private AudioClip placeSound;
     [SerializeField] private AudioClip hoverSound;
-    [SerializeField] private AudioClip rotateSound;
-
+    [SerializeField] private AudioClip rotateSound0;
+    [SerializeField] private AudioClip rotateSound1;
+    [SerializeField] private AudioClip rotateSound2;
+    [SerializeField] private AudioClip rotateSound3;
     private AudioSource _audioSource;
     public bool isPlaced = false;
     public float timeElapsed;
@@ -41,6 +44,10 @@ public class ShapeInstance : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         SetupInputActions();
+
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera != null && mainCamera.GetComponent<Physics2DRaycaster>() == null)
+            mainCamera.gameObject.AddComponent<Physics2DRaycaster>();
     }
 
     private void Start()
@@ -268,10 +275,32 @@ public class ShapeInstance : MonoBehaviour
 
         RebuildColliders();
 
-        if (rotateSound != null)
-            _audioSource.PlayOneShot(rotateSound);
+        if (rotateSound0 != null)
+            PlayRotateSound(shapeData.rotationStep);
 
         UpdateGhostVisuals();
+    }
+    public void PlayRotateSound(int step) 
+    {
+        switch (step)
+        {
+            case 0:
+                _audioSource.clip = rotateSound0;
+                _audioSource.Play();
+                break;
+            case 1:
+                _audioSource.clip = rotateSound1;
+                _audioSource.Play();
+                break;
+            case 2:
+                _audioSource.clip = rotateSound2;
+                _audioSource.Play();
+                break;
+            case 3:
+                _audioSource.clip = rotateSound3;
+                _audioSource.Play();
+                break;
+        }
     }
 
     /// <summary>
@@ -435,8 +464,7 @@ public class ShapeInstance : MonoBehaviour
 
             tileVisuals.Add(tile);
 
-            var col = gameObject.AddComponent<BoxCollider2D>();
-            col.offset = new Vector2(cellOffset.x, cellOffset.y);
+            var col = tile.AddComponent<BoxCollider2D>();
             col.size   = Vector2.one;
         }
     }
@@ -491,7 +519,7 @@ public class ShapeInstance : MonoBehaviour
         var hits = Physics2D.OverlapPointAll(worldPoint);
         foreach (var hit in hits)
         {
-            if (hit.gameObject == gameObject)
+            if (hit.transform.IsChildOf(transform) || hit.gameObject == gameObject)
                 return true;
         }
         return false;
