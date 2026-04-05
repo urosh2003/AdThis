@@ -479,7 +479,7 @@ public class GridManager : MonoBehaviour
                 tmp.sortingOrder = 1000;
                 if (zoneLabelFont != null) tmp.font = zoneLabelFont;
                 tmp.rectTransform.sizeDelta = new Vector2(cellSize, cellSize);
-                textObj.SetActive(false);
+                textObj.SetActive(cell.IsOccupied);
                 zoneLabelsByCell[coord] = textObj;
 
                 zoneOverlays.Add(overlay);
