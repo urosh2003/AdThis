@@ -113,6 +113,7 @@ public class ViewerDealManager : MonoBehaviour
     private void OnDisable()
     {
         GridManager.OnMoneyChanged -= OnMoneyChanged;
+        RoundManager.OnStateChanged -= CheckForClose;
     }
 
     private void GenerateDeals()

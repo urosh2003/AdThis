@@ -55,8 +55,9 @@ public class PowerUpSelectionUI : MonoBehaviour
         {
             _selectionTimeRemaining = 0f;
             _timerActive = false;
+            var randomChoice = _currentChoices[UnityEngine.Random.Range(0, _currentChoices.Count)];
             Hide();
-            _onSelected?.Invoke(null);
+            _onSelected?.Invoke(randomChoice);
         }
     }
 
