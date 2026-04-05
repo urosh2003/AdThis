@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class ShapeInstance : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ShapeInstance : MonoBehaviour
 {
     [SerializeField] public TileShape shapeData;
     [SerializeField] private Color legalColor = Color.green;
@@ -40,21 +40,6 @@ public class ShapeInstance : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // Lifecycle
     // ─────────────────────────────────────────────────────────────
 
-    public Texture2D hoverCursor;
-    public Texture2D defaultCursor;
-    
-    public Vector2 hotspot = Vector2.zero;
-    public CursorMode cursorMode = CursorMode.Auto;
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        Cursor.SetCursor(hoverCursor, hotspot, cursorMode);
-    }
-    
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Cursor.SetCursor(defaultCursor, Vector2.zero, cursorMode); // reset to default
-    }
-    
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();

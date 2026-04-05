@@ -66,6 +66,8 @@ public class Jimmy : MonoBehaviour
     
     private void LoadAllSprites()
     {
+        return;
+        /*
         const string folderPath = "Assets/Jimmies";
 
         availableSprites.Clear();
@@ -90,7 +92,7 @@ public class Jimmy : MonoBehaviour
         }
 
         ShuffleList(availableSprites);
-        Debug.Log($"Loaded {availableSprites.Count} sprites from {folderPath}");
+        Debug.Log($"Loaded {availableSprites.Count} sprites from {folderPath}");*/
     }
     
     private void SetRandomSprite()
