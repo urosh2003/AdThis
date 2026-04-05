@@ -15,4 +15,11 @@ public class ThumbnailTailorPowerUp : PowerUp
     {
         GridManager.Instance.CurrentViewers += viewerBonus;
     }
+
+    public override void Scale(float coefficient)
+    {
+        base.Scale(coefficient);
+        viewerBonus = (int)(viewerBonus * coefficient);
+        this.description = "Instantly gain " + viewerBonus + " viewers.";
+    }
 }

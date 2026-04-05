@@ -35,12 +35,16 @@ public class PowerUpManager : MonoBehaviour
         };
     }
 
-    public bool TryPurchase(PowerUp powerUp)
+    public void Purchase(PowerUp powerUp)
     {
         if (powerUp.paymentMode == PaymentMode.MoneyCost)
         {
-            if (GridManager.Instance.CurrentMoney < powerUp.moneyCost)
-                return false;
+            int currentMoney = GridManager.Instance.CurrentMoney;
+            if (currentMoney < powerUp.moneyCost)
+            {
+                float coefficient = (float)currentMoney / powerUp.moneyCost;
+                powerUp.Scale(coefficient);
+            }
             GridManager.Instance.CurrentMoney -= powerUp.moneyCost;
         }
 
@@ -52,8 +56,6 @@ public class PowerUpManager : MonoBehaviour
             powerUp.ApplyPowerUp();
             currentPowerUps.Remove(powerUp);
         }
-
-        return true;
     }
 
     public void TryOfferPowerUpSelection(Action onComplete)
@@ -82,7 +84,7 @@ public class PowerUpManager : MonoBehaviour
         {
             if (selected != null)
             {
-                currentPowerUps.Add(selected);
+                Purchase(selected);
                 availablePowerUps.Remove(selected);
             }
             onComplete?.Invoke();

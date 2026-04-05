@@ -46,4 +46,10 @@ public abstract class PowerUp
 
     /// Called once per round for internal state updates (before remainingRounds is decremented).
     public virtual void OnRoundTick() { }
+
+    /// Scale cost and effects by the given coefficient (0-1). Called when player can't afford full price.
+    public virtual void Scale(float coefficient)
+    {
+        moneyCost = (int)(moneyCost * coefficient);
+    }
 }
