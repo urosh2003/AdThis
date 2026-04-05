@@ -697,8 +697,6 @@ public class GridManager : MonoBehaviour
 
             timeOffset += 0.5f;
         }
-        StartCoroutine(updateCurrentMoney(-(int)(totalJimmysCut*totalRoundMoney), timeOffset));
-
         // Early finish bonus: 2% per second saved
         float secondsSaved = RoundManager.Instance.secondsSavedThisRound;
         if (secondsSaved > 0 && totalRoundMoney > 0)
@@ -707,7 +705,12 @@ public class GridManager : MonoBehaviour
             if (earlyBonus > 0)
                 StartCoroutine(updateCurrentMoney(earlyBonus, timeOffset + 0.3f));
             timeOffset += 0.3f;
+            totalRoundMoney += earlyBonus;
         }
+        
+        StartCoroutine(updateCurrentMoney(-(int)(totalJimmysCut*totalRoundMoney), timeOffset));
+
+        
 
         lastTotalRoundMoney = totalRoundMoney;
         StartCoroutine(WaitForParticles(timeOffset+0.5f));
