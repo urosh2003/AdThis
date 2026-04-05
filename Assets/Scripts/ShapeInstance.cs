@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class ShapeInstance : MonoBehaviour
+public class ShapeInstance : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public TileShape shapeData;
     [SerializeField] private Color legalColor = Color.green;
@@ -39,10 +40,29 @@ public class ShapeInstance : MonoBehaviour
     // Lifecycle
     // ─────────────────────────────────────────────────────────────
 
+    public Texture2D hoverCursor;
+    public Texture2D defaultCursor;
+    
+    public Vector2 hotspot = Vector2.zero;
+    public CursorMode cursorMode = CursorMode.Auto;
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Cursor.SetCursor(hoverCursor, hotspot, cursorMode);
+    }
+    
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Cursor.SetCursor(defaultCursor, Vector2.zero, cursorMode); // reset to default
+    }
+    
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         SetupInputActions();
+
+        if (mainCamera == null) mainCamera = Camera.main;
+        if (mainCamera != null && mainCamera.GetComponent<Physics2DRaycaster>() == null)
+            mainCamera.gameObject.AddComponent<Physics2DRaycaster>();
     }
 
     private void Start()
@@ -298,7 +318,6 @@ public class ShapeInstance : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// Rotates each cell offset 90° clockwise: (x, y) → (y, -x).
     /// </summary>
@@ -460,8 +479,7 @@ public class ShapeInstance : MonoBehaviour
 
             tileVisuals.Add(tile);
 
-            var col = gameObject.AddComponent<BoxCollider2D>();
-            col.offset = new Vector2(cellOffset.x, cellOffset.y);
+            var col = tile.AddComponent<BoxCollider2D>();
             col.size   = Vector2.one;
         }
     }
@@ -516,7 +534,7 @@ public class ShapeInstance : MonoBehaviour
         var hits = Physics2D.OverlapPointAll(worldPoint);
         foreach (var hit in hits)
         {
-            if (hit.gameObject == gameObject)
+            if (hit.transform.IsChildOf(transform) || hit.gameObject == gameObject)
                 return true;
         }
         return false;

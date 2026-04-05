@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ComicPanel.unity
     guid: 18d9c05074227594bacc8b1cc02302ab
   - enabled: 1
+    path: Assets/Scenes/Comic2Panel.unity
+    guid: 395a8f321b1d90f4a821d0b4487b72c7
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 2fca6e9a23588c94ca7d6133be942e7d
   - enabled: 1

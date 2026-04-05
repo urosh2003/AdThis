@@ -110,6 +110,7 @@ public class GridManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.SetCursor(defaultCursor, hotspot, cursorMode);
         CurrentViewers = startingViewers;
         CurrentMoney = 0;
 
@@ -443,7 +444,11 @@ public class GridManager : MonoBehaviour
                 label.SetActive(false);
         }
     }
-
+    
+    public Texture2D defaultCursor;
+    public Vector2 hotspot = Vector2.zero;
+    public CursorMode cursorMode = CursorMode.Auto;
+    
     private void UpdateZoneVisuals()
     {
         foreach (var overlay in zoneOverlays)
@@ -773,6 +778,7 @@ public class GridManager : MonoBehaviour
         PowerUpManager.instance.TickRound();
         PowerUpManager.instance.TryOfferPowerUpSelection(() =>
         {
+            Cursor.SetCursor(defaultCursor, hotspot, cursorMode);
             RoundManager.Instance.StartNewRound();
         });
     }

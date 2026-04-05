@@ -43,7 +43,7 @@ public class PowerUpManager : MonoBehaviour
         }
         else if (powerUp.paymentMode == PaymentMode.JimmysCut)
         {
-            Contract.Instance.CreateNewCut((int)powerUp.jimmysCut);
+            Contract.Instance.CreateNewCut((int)(powerUp.jimmysCut * 100));
             Contract.Instance.CreateNewCross();
         }
 
