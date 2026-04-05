@@ -17,13 +17,4 @@ public class ApologyVideoPowerUp : PowerUp
     {
         GridManager.Instance.CurrentViewers += viewerBonus;
         GridManager.Instance.CurrentMoney += moneyBonus;
-    }
-
-    public override void Scale(float coefficient)
-    {
-        base.Scale(coefficient);
-        viewerBonus = (int)(viewerBonus * coefficient);
-        moneyBonus = (int)(moneyBonus * coefficient);
-        this.description = "Instantly gain " + viewerBonus + " viewers and $" + moneyBonus + ".";
-    }
-}
+    }}

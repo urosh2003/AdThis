@@ -39,13 +39,7 @@ public class PowerUpManager : MonoBehaviour
     {
         if (powerUp.paymentMode == PaymentMode.MoneyCost)
         {
-            int currentMoney = GridManager.Instance.CurrentMoney;
-            if (currentMoney < powerUp.moneyCost)
-            {
-                float coefficient = (float)currentMoney / powerUp.moneyCost;
-                powerUp.Scale(coefficient);
-            }
-            GridManager.Instance.CurrentMoney -= powerUp.moneyCost;
+            GridManager.Instance.CurrentMoney = Mathf.Max(1, GridManager.Instance.CurrentMoney - powerUp.moneyCost);
         }
 
         currentPowerUps.Add(powerUp);
