@@ -35,7 +35,19 @@ public class ViewerDealManager : MonoBehaviour
     [SerializeField] private Sprite lightBackground;
     [SerializeField] private Sprite darkBackground;
 
+    [SerializeField] private Image bar;
+    [SerializeField] private Sprite lightBar;
+    [SerializeField] private Sprite darkBar;
+    
+    [SerializeField] private Image chatPanel;
+    [SerializeField] private Color lightPanelColor;
+    [SerializeField] private Color darkPanelColor;
+    
+    [SerializeField] private AudioSource mainTheme;
+    [SerializeField] private AudioSource jimmysTheme;
+    
     public static event Action<ViewerDeal> OnDealPurchased;
+    public static event Action<bool> OnBackgroundChanged;
 
     private void Awake()
     {
@@ -53,11 +65,21 @@ public class ViewerDealManager : MonoBehaviour
     public void TurnBackgroundDark()
     {
         background.sprite = darkBackground;
+        OnBackgroundChanged?.Invoke(true);
+        bar.sprite = darkBar;
+        chatPanel.color = darkPanelColor;
+        mainTheme.Pause();
+        jimmysTheme.Play();
     }
 
     public void TurnBackgroundLight()
     {
         background.sprite = lightBackground;
+        OnBackgroundChanged?.Invoke(false);
+        bar.sprite = lightBar;
+        chatPanel.color = lightPanelColor;
+        mainTheme.UnPause();
+        jimmysTheme.Pause();
     }
 
     public void TurnOnDeals()

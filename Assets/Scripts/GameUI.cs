@@ -12,6 +12,11 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Button doneButton;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TMP_Text gameOverScoreText;
+    
+    [Header("Timer Display")]
+    [SerializeField] private Color timerFullColor = Color.green;
+    [SerializeField] private Color timerMidColor = Color.yellow;
+    [SerializeField] private Color timerEmptyColor = Color.red;
 
     [Header("Score Punch Effect")]
     [SerializeField] private float punchScale = 1.05f;
@@ -68,12 +73,21 @@ public class GameUI : MonoBehaviour
 
     private void UpdateTimer(float time)
     {
-        timerImage.fillAmount = time / RoundManager.Instance.roundTime;
+        float ratio = time / RoundManager.Instance.roundTime;
+        timerImage.fillAmount = ratio;
 
-        float timeRemainingRatio = time / RoundManager.Instance.roundTime;
-        float currentInterval = Mathf.Lerp(0.06f, 1.75f, timeRemainingRatio);
+        if (ratio < 0.5f)
+        {
+            timerImage.color = Color.Lerp(timerEmptyColor, timerMidColor, ratio * 2f);
+        }
+        else
+        {
+            timerImage.color = Color.Lerp(timerMidColor, timerFullColor, (ratio - 0.5f) * 2f);
+        }
 
-        if (_lastBeepTime - time >= currentInterval)
+        float currentInterval = Mathf.Lerp(0.06f, 1.75f, ratio);
+
+        if (!RoundManager.Instance.isDraining && _lastBeepTime - time >= currentInterval)
         {
             timerImage.GetComponent<AudioSource>().Play();
             _lastBeepTime = time;
@@ -221,15 +235,29 @@ public class GameUI : MonoBehaviour
         if (floatingLabelPrefab == null || floatingLabelParent == null) return;
         TMP_Text label = Instantiate(floatingLabelPrefab, floatingLabelParent);
         label.text = text;
+        bool isNegative = text.StartsWith("-") || (text.StartsWith("$-"));
+        label.color = isNegative
+            ? new Color(0xe9 / 255f, 0x38 / 255f, 0x41 / 255f)
+            : floatingLabelPrefab.color;
+        if (isNegative)
+        {
+            label.fontSize = floatingLabelPrefab.fontSize * 3.0f;
+        }
+
         StartCoroutine(FloatLabel(label));
     }
 
     private IEnumerator FloatLabel(TMP_Text label)
     {
+        // Random spawn offset
+        Vector3 startPos = label.transform.localPosition + new Vector3(
+            Random.Range(-50f, 50f),
+            Random.Range(-50f, 50f),
+            0f);
+        label.transform.localPosition = startPos;
         yield return null;
 
         float elapsed = 0f;
-        Vector3 startPos = label.transform.localPosition;
         Color startColor = label.color;
         float swayFrequency = Random.Range(0.5f, 1f);
         float swayAmplitude = Random.Range(5f, 10f);
