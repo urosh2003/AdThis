@@ -47,6 +47,7 @@ public class ViewerDealManager : MonoBehaviour
     [SerializeField] private AudioSource jimmysTheme;
     
     public static event Action<ViewerDeal> OnDealPurchased;
+    public static event Action<bool> OnBackgroundChanged;
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class ViewerDealManager : MonoBehaviour
     public void TurnBackgroundDark()
     {
         background.sprite = darkBackground;
+        OnBackgroundChanged?.Invoke(true);
         bar.sprite = darkBar;
         chatPanel.color = darkPanelColor;
         mainTheme.Pause();
@@ -73,6 +75,7 @@ public class ViewerDealManager : MonoBehaviour
     public void TurnBackgroundLight()
     {
         background.sprite = lightBackground;
+        OnBackgroundChanged?.Invoke(false);
         bar.sprite = lightBar;
         chatPanel.color = lightPanelColor;
         mainTheme.UnPause();

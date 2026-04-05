@@ -235,6 +235,15 @@ public class GameUI : MonoBehaviour
         if (floatingLabelPrefab == null || floatingLabelParent == null) return;
         TMP_Text label = Instantiate(floatingLabelPrefab, floatingLabelParent);
         label.text = text;
+        bool isNegative = text.StartsWith("-") || (text.StartsWith("$-"));
+        label.color = isNegative
+            ? new Color(0xe9 / 255f, 0x38 / 255f, 0x41 / 255f)
+            : floatingLabelPrefab.color;
+        if (isNegative)
+        {
+            label.fontSize = floatingLabelPrefab.fontSize * 3.0f;
+        }
+
         StartCoroutine(FloatLabel(label));
     }
 
@@ -242,8 +251,14 @@ public class GameUI : MonoBehaviour
     {
         yield return null;
 
+        // Random spawn offset
+        Vector3 startPos = label.transform.localPosition + new Vector3(
+            Random.Range(-50f, 50f),
+            Random.Range(-50f, 50f),
+            0f);
+        label.transform.localPosition = startPos;
+
         float elapsed = 0f;
-        Vector3 startPos = label.transform.localPosition;
         Color startColor = label.color;
         float swayFrequency = Random.Range(0.5f, 1f);
         float swayAmplitude = Random.Range(5f, 10f);
