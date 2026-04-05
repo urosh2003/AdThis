@@ -15,6 +15,7 @@ public class GridCell
     
     public bool IsBonus => TileType == TileType.Bonus;
     public bool IsForbidden => TileType == TileType.Forbidden;
+    [SerializeField] private TMP_FontAsset pixelFont;
 
     public GridCell(TileType type = TileType.Normal, TileShape occupiedBy = null)
     {
@@ -434,6 +435,15 @@ public class GridManager : MonoBehaviour
         UpdateZoneVisuals();
     }
 
+    public void HideZoneLabels()
+    {
+        foreach (var label in zoneLabelsByCell.Values)
+        {
+            if (label != null)
+                label.SetActive(false);
+        }
+    }
+
     private void UpdateZoneVisuals()
     {
         foreach (var overlay in zoneOverlays)
@@ -472,9 +482,12 @@ public class GridManager : MonoBehaviour
                 textObj.transform.SetParent(overlay.transform);
                 textObj.transform.localPosition = new Vector3(0, 0, -0.01f);
                 var tmp = textObj.AddComponent<TextMeshPro>();
-                tmp.text = cell.TileType == TileType.Bonus ? "x2" : "-" + viewerLossPerForbiddenCell;
+                tmp.font = this.zoneLabelFont;
+                tmp.text = cell.TileType == TileType.Bonus ? "x" + bonusMultiplier: "-" + viewerLossPerForbiddenCell;
                 tmp.color = cell.TileType == TileType.Bonus ? bonusLabelColor : forbiddenLabelColor;
-                tmp.fontSize = 4f;
+                tmp.fontSize = cell.TileType == TileType.Bonus ? 10: 6;
+                if(cell.TileType == TileType.Bonus)
+                    tmp.fontStyle = FontStyles.Bold;
                 tmp.alignment = TextAlignmentOptions.Center;
                 tmp.sortingOrder = 1000;
                 if (zoneLabelFont != null) tmp.font = zoneLabelFont;

@@ -87,6 +87,7 @@ public class RoundManager : MonoBehaviour
             Debug.Log($"Ad not placed in time! Lost {viewerPenaltyForNotPlacing} viewers.");
         }
 
+        GridManager.Instance.HideZoneLabels();
         StartCoroutine(BetweenRoundsDelayThenScore());
 
         if (GridManager.Instance.CurrentViewers <= 0)

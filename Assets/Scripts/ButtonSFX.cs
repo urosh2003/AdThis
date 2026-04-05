@@ -7,8 +7,10 @@ public class ButtonSFX : MonoBehaviour
     [SerializeField] private List<AudioClip> buttonClips;
     // Start is called before the first frame update
 
+    public static ButtonSFX instance;
     void Awake()
     {
+        instance = this;
         //DontDestroyOnLoad(gameObject);
     }
     

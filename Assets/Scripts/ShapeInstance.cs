@@ -12,8 +12,10 @@ public class ShapeInstance : MonoBehaviour
     [SerializeField] private AudioClip pickUpSound;
     [SerializeField] private AudioClip placeSound;
     [SerializeField] private AudioClip hoverSound;
-    [SerializeField] private AudioClip rotateSound;
-
+    [SerializeField] private AudioClip rotateSound0;
+    [SerializeField] private AudioClip rotateSound1;
+    [SerializeField] private AudioClip rotateSound2;
+    [SerializeField] private AudioClip rotateSound3;
     private AudioSource _audioSource;
     public bool isPlaced = false;
     public float timeElapsed;
@@ -268,11 +270,34 @@ public class ShapeInstance : MonoBehaviour
 
         RebuildColliders();
 
-        if (rotateSound != null)
-            _audioSource.PlayOneShot(rotateSound);
+        if (rotateSound0 != null)
+            PlayRotateSound(shapeData.rotationStep);
 
         UpdateGhostVisuals();
     }
+    public void PlayRotateSound(int step) 
+    {
+        switch (step)
+        {
+            case 0:
+                _audioSource.clip = rotateSound0;
+                _audioSource.Play();
+                break;
+            case 1:
+                _audioSource.clip = rotateSound1;
+                _audioSource.Play();
+                break;
+            case 2:
+                _audioSource.clip = rotateSound2;
+                _audioSource.Play();
+                break;
+            case 3:
+                _audioSource.clip = rotateSound3;
+                _audioSource.Play();
+                break;
+        }
+    }
+
 
     /// <summary>
     /// Rotates each cell offset 90° clockwise: (x, y) → (y, -x).

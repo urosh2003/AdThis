@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae00ff4634d7402e989409b2ca41f159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shapeData: {fileID: 11400000, guid: 385af7ebd013e334588bc2d3c0199534, type: 2}
+  shapeData: {fileID: 11400000, guid: fa1c90c40dcfe5140a2664312168be5e, type: 2}
   legalColor: {r: 0, g: 1, b: 0, a: 1}
   illegalColor: {r: 1, g: 0, b: 0, a: 1}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
@@ -53,6 +53,10 @@ MonoBehaviour:
   pickUpSound: {fileID: 8300000, guid: 46edc1481bf6e814c97f7887eae451c8, type: 3}
   placeSound: {fileID: 8300000, guid: e455e11a07724804b9666f6ddadc5b37, type: 3}
   hoverSound: {fileID: 8300000, guid: 42f9c7a7d021a35488f09f77edd59671, type: 3}
+  rotateSound0: {fileID: 8300000, guid: 21f16091684dc27478dfac0442ea8d7b, type: 3}
+  rotateSound1: {fileID: 8300000, guid: 624a0a192b4bc6f488323e776a09ee84, type: 3}
+  rotateSound2: {fileID: 8300000, guid: ab75230dbeacd7d4aa71ad20dcd3c751, type: 3}
+  rotateSound3: {fileID: 8300000, guid: 06300ffc1f0b6d04ba25f7e4e7fb5a86, type: 3}
   isPlaced: 0
   timeElapsed: 0
   currentSprite: 1

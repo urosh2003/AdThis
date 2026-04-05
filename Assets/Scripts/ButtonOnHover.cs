@@ -15,6 +15,7 @@ public class ButtonOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         jimmyMatrix.sprite = jimmyHandSprite;
+        ButtonSFX.instance.PlayRandomButtonSFX();
         //Cursor.SetCursor(hoverCursor, hotspot, cursorMode);
     }
 

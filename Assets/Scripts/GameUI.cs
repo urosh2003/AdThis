@@ -241,7 +241,7 @@ public class GameUI : MonoBehaviour
             : floatingLabelPrefab.color;
         if (isNegative)
         {
-            label.fontSize = floatingLabelPrefab.fontSize * 3.0f;
+            label.fontSize = floatingLabelPrefab.fontSize * 1.5f;
         }
 
         StartCoroutine(FloatLabel(label));
