@@ -84,8 +84,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] private float zonesOppacity = 1f;
     [SerializeField] private Color bonusLabelColor = Color.green;
     [SerializeField] private Color forbiddenLabelColor = Color.red;
+    [SerializeField] private TMP_FontAsset zoneLabelFont;
 
     private List<GameObject> zoneOverlays = new List<GameObject>();
+    private Dictionary<Vector2Int, GameObject> zoneLabelsByCell = new Dictionary<Vector2Int, GameObject>();
     
     [Header("Particle System Prefabs")]
     [SerializeField] private ParticleSystem normalParticleSystem;
@@ -173,10 +175,13 @@ public class GridManager : MonoBehaviour
     {
         if (!IsPositionLegal(coord, shape))
             return;
-        
+
         foreach (var cellOffset in shape.cells)
         {
-            Grid[coord.x + cellOffset.x, coord.y + cellOffset.y].OccupiedBy = shape;
+            var pos = new Vector2Int(coord.x + cellOffset.x, coord.y + cellOffset.y);
+            Grid[pos.x, pos.y].OccupiedBy = shape;
+            if (zoneLabelsByCell.TryGetValue(pos, out var label))
+                label.SetActive(true);
         }
     }
 
@@ -188,6 +193,8 @@ public class GridManager : MonoBehaviour
             if (IsInBounds(pos) && Grid[pos.x, pos.y].OccupiedBy == shape)
             {
                 Grid[pos.x, pos.y].OccupiedBy = null;
+                if (zoneLabelsByCell.TryGetValue(pos, out var label))
+                    label.SetActive(false);
             }
         }
     }
@@ -432,6 +439,7 @@ public class GridManager : MonoBehaviour
         foreach (var overlay in zoneOverlays)
             Destroy(overlay);
         zoneOverlays.Clear();
+        zoneLabelsByCell.Clear();
 
         for (int x = 0; x < width; x++)
         {
@@ -458,7 +466,22 @@ public class GridManager : MonoBehaviour
 
                 spriteRenderer.sortingOrder = 999;
                 spriteRenderer.color = new Color(1, 1, 1, zonesOppacity);
-                
+
+                // Add text label describing cell effect (hidden until an ad covers it)
+                var textObj = new GameObject("Label");
+                textObj.transform.SetParent(overlay.transform);
+                textObj.transform.localPosition = new Vector3(0, 0, -0.01f);
+                var tmp = textObj.AddComponent<TextMeshPro>();
+                tmp.text = cell.TileType == TileType.Bonus ? "x2" : "-" + viewerLossPerForbiddenCell;
+                tmp.color = cell.TileType == TileType.Bonus ? bonusLabelColor : forbiddenLabelColor;
+                tmp.fontSize = 4f;
+                tmp.alignment = TextAlignmentOptions.Center;
+                tmp.sortingOrder = 1000;
+                if (zoneLabelFont != null) tmp.font = zoneLabelFont;
+                tmp.rectTransform.sizeDelta = new Vector2(cellSize, cellSize);
+                textObj.SetActive(false);
+                zoneLabelsByCell[coord] = textObj;
+
                 zoneOverlays.Add(overlay);
             }
         }
